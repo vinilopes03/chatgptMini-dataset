@@ -43,7 +43,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+                response.setHeader("Location", "/author.jsp?lang=" + data.replaceAll("[\\r\\n]", "")); // FIX: Sanitize input
             }
         }
     }
