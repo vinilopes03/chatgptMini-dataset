@@ -89,10 +89,59 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_07 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = System.getenv("ADD"); // Read from environment variable
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // Proper encoding
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive == 5)
+        {
+            data = System.getenv("ADD"); // Read from environment variable
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // Proper encoding
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // More good methods to be implemented in future commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 }
