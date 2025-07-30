@@ -50,6 +50,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -71,7 +72,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
         String data;
         if (IO.STATIC_FINAL_TRUE)
         {
-            data = System.getenv("ADD"); // Read data from environment variable
+            data = System.getenv("ADD");
         }
         else
         {
@@ -83,6 +84,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
             IO.writeLine("Benign, fixed string");
         }
         else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode input
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
         {
             if (data != null)
             {
