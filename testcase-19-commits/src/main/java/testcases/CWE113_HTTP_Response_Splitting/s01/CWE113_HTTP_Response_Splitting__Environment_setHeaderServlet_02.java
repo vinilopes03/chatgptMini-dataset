@@ -29,7 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         String data;
         if (true)
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -46,7 +45,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first true to false */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -56,8 +54,29 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
         }
 
         if (true)
@@ -71,7 +90,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
