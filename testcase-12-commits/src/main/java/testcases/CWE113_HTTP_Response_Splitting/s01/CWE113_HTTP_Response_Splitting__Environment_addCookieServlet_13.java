@@ -20,19 +20,19 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        // Initializing data from environment variable
         if (IO.STATIC_FINAL_FIVE==5) {
             data = System.getenv("ADD");
         } else {
-            data = null; // Default initialization
+            data = null;
         }
 
-        // Adding cookie without validation
         if (IO.STATIC_FINAL_FIVE==5) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
@@ -41,9 +41,23 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
+    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        // Using a hardcoded string
+        data = "foo"; // Good source
+
+        if (IO.STATIC_FINAL_FIVE==5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still bad sink
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method, will implement later
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
