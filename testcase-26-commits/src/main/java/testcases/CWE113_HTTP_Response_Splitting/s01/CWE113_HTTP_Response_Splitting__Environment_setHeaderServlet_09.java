@@ -47,16 +47,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string
+
         if (IO.STATIC_FINAL_TRUE)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
         }
-        else
-        {
-            data = null; // This will never run
-        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string
 
         if (IO.STATIC_FINAL_TRUE)
         {
