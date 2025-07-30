@@ -47,8 +47,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_07 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive != 5)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Hardcoded string
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body to be implemented in future commits
+        goodG2B1(request, response);
+        // More good methods to be implemented in future commits
     }
 }
