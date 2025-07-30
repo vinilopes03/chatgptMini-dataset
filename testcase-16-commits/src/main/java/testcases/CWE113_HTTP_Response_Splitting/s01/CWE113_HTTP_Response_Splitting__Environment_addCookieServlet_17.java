@@ -38,11 +38,9 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
         }
     }
 
-    /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        /* FIX: Use a hardcoded string */
         data = "foo";
         for (int j = 0; j < 1; j++)
         {
@@ -54,9 +52,25 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
         }
     }
 
+    /* goodB2G() - use badsource and goodsink*/
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = System.getenv("ADD");
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
