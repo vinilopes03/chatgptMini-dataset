@@ -29,7 +29,23 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented later
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
