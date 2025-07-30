@@ -26,7 +26,26 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_16 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial logic for bad case will be implemented in the next commits
+        String data;
+
+        while (true)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
