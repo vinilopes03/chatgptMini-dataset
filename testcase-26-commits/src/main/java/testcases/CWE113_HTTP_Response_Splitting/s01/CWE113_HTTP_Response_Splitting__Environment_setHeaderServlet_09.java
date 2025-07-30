@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -27,8 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
         String data;
         if (IO.STATIC_FINAL_TRUE)
         {
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
         }
         else
@@ -40,7 +40,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -48,7 +47,24 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_09 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // This will never run
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
