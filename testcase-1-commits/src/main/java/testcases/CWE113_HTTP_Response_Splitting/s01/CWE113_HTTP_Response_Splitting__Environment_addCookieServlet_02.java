@@ -46,8 +46,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second true to false */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (true)
@@ -59,11 +59,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
             data = null;
         }
 
-        if (false)
-        {
-            // Dead code
-        }
-        else
+        if (true)
         {
             if (data != null)
             {
@@ -77,6 +73,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_02 ext
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
