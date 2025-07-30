@@ -59,8 +59,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null; // This block will never execute
         }
 
         if (privateTrue)
@@ -76,6 +98,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
