@@ -49,6 +49,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -60,6 +61,32 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = System.getenv("ADD"); // Read data from environment variable
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode input
                 response.addCookie(cookieSink);
             }
         }
