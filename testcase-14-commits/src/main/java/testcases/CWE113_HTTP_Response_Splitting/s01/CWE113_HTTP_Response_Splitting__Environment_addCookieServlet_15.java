@@ -31,8 +31,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
         switch (6)
         {
         case 6:
-            /* get environment variable ADD */
-            /* POTENTIAL FLAW: Read data from an environment variable */
             data = System.getenv("ADD");
             break;
         default:
@@ -46,7 +44,36 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing the first switch to switch(5) */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
             break;
