@@ -24,15 +24,32 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_31 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented in future commits
+        String dataCopy;
+        {
+            String data;
+
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Method will be implemented in future commits
     }
-
-    // Additional methods will be defined in future commits
 
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
