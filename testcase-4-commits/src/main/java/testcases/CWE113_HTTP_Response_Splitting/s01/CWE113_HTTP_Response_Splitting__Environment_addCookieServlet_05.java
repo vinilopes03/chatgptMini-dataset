@@ -95,10 +95,39 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_05 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second privateTrue to privateFalse */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD"); // Bad source
+        }
+        else
+        {
+            data = null; // This block will never execute
+        }
+
+        if (privateFalse)
+        {
+            // This block will never execute
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
