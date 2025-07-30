@@ -27,22 +27,28 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-
-        /* We need to have one source outside of a for loop in order
-         * to prevent the Java compiler from generating an error because
-         * data is uninitialized
-         */
-
-        /* get environment variable ADD */
-        /* POTENTIAL FLAW: Read data from an environment variable */
         data = System.getenv("ADD");
-
         for (int j = 0; j < 1; j++)
         {
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -50,7 +56,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_17 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
