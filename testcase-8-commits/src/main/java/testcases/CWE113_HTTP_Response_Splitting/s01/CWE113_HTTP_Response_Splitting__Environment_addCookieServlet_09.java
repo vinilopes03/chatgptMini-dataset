@@ -29,19 +29,18 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
         String data;
         if (IO.STATIC_FINAL_TRUE)
         {
-            /* get environment variable ADD */
-            data = System.getenv("ADD"); // Read data from environment variable
+            data = System.getenv("ADD");
         }
         else
         {
-            data = null; // Prevent compiler errors
+            data = null;
         }
 
         if (IO.STATIC_FINAL_TRUE)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data); // Use unverified input
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -49,6 +48,20 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_09 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial placeholder for good method implementation
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Use a hardcoded string
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 }
