@@ -103,10 +103,64 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_08 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            /* get environment variable ADD */
+            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateReturnsFalse())
+        {
+            // This code will never run
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsTrue())
+        {
+            /* get environment variable ADD */
+            data = System.getenv("ADD"); // POTENTIAL FLAW: Read data from an environment variable
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Other methods will be added in future commits
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 }
