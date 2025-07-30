@@ -44,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
     public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        // Using a hardcoded string
         data = "foo"; // Good source
 
         if (IO.STATIC_FINAL_FIVE==5) {
@@ -55,9 +54,27 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_13 ext
         }
     }
 
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5) {
+            data = System.getenv("ADD");
+        } else {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
