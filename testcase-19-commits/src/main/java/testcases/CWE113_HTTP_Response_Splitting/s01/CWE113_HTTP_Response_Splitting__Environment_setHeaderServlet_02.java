@@ -66,7 +66,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -88,10 +87,65 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_02 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second true to false */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            /* get environment variable ADD */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (false)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
