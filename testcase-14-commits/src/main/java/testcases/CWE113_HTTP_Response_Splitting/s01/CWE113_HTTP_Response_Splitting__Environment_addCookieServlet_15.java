@@ -52,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing the first switch to switch(5) */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -63,7 +62,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
             data = null;
             break;
         default:
-            /* FIX: Use a hardcoded string */
             data = "foo";
             break;
         }
@@ -84,6 +82,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_15 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits.
+        goodG2B1(request, response);
     }
 }
