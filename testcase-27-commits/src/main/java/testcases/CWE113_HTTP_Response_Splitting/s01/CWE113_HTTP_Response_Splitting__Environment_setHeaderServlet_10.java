@@ -29,7 +29,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         String data;
         if (IO.staticTrue)
         {
-            /* get environment variable ADD */
             data = System.getenv("ADD");
         }
         else
@@ -51,18 +50,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_10 ext
         String data;
         if (IO.staticTrue)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = System.getenv("ADD");
         }
         else
         {
-            data = null; // This code will never run
+            data = null;
         }
 
         if (IO.staticTrue)
         {
             if (data != null)
             {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
