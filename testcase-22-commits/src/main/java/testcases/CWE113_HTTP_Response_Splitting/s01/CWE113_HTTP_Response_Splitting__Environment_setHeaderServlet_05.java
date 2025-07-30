@@ -50,22 +50,92 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_05 ext
 
     public void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good source, bad sink implementation to be added
+        String data;
+        if (privateFalse)
+        {
+            data = null; // This code will never run
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good source, bad sink implementation to be added
+        String data;
+        if (privateTrue)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Bad source, good sink implementation to be added
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateFalse)
+        {
+            // No operation
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Bad source, good sink implementation to be added
+        String data;
+        if (privateTrue)
+        {
+            data = System.getenv("ADD"); // POTENTIAL FLAW
+        }
+        else
+        {
+            data = null; // This code will never run
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
