@@ -53,7 +53,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_12 ext
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // Call to goodB2G will be added later
+        goodB2G(request, response);
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -83,7 +83,29 @@ public class CWE113_HTTP_Response_Splitting__Environment_addCookieServlet_12 ext
     
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        String data;
+        if (IO.staticReturnsTrueOrFalse())
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+
+        if (IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
