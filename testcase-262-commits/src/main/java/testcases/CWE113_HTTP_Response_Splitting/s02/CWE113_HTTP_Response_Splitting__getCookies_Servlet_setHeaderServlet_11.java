@@ -22,7 +22,24 @@ import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_11 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will go here later
+        String data;
+        if (IO.staticReturnsTrue()) {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null) {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        } else {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
