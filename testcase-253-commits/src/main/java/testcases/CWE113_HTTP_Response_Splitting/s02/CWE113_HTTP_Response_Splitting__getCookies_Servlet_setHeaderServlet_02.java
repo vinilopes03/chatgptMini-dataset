@@ -99,9 +99,58 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second true to false */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (false)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+    }
+
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
