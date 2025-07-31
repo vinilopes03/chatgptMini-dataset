@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
 
 import java.util.logging.Level;
 
@@ -60,7 +61,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but data is safe
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Safe output
             }
         }
     }
