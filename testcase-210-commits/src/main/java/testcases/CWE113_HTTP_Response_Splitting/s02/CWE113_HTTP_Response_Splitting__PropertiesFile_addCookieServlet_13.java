@@ -83,4 +83,23 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_13 
             }
         }
     }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null; // Initialize data to avoid compiler error
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
 }
