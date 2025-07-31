@@ -37,17 +37,70 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (true)
+        if (false)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Good source
         }
         if (true)
         {
             if (data != null)
             {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = "foo"; // Good source
+        }
+        if (true)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+        // Simulating database read (omitted)
+        if (true)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+        // Simulating database read (omitted)
+        if (true)
+        {
+            if (data != null)
+            {
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
