@@ -93,9 +93,33 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
