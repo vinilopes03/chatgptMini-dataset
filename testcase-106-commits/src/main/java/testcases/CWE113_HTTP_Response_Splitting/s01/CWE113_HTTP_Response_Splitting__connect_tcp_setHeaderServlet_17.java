@@ -32,7 +32,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_17 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-
         data = ""; /* Initialize data */
 
         /* Read data using an outbound tcp connection */
@@ -68,7 +67,13 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_17 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented in later commits
+        String data;
+        data = "hardcoded_string"; // Use a hardcoded string
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // No flaw
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
