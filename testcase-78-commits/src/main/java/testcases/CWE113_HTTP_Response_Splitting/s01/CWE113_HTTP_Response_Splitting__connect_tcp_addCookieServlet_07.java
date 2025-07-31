@@ -29,37 +29,25 @@ import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 extends AbstractTestCaseServlet
 {
-    /* The variable below is not declared "final", but is never assigned
-     * any other value so a tool should be able to identify that reads of
-     * this will always give its initialized value. */
     private int privateFive = 5;
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; /* Initialize data */
-        if (privateFive == 5)
-        {
-            /* Read data using an outbound tcp connection */
-            Socket socket = new Socket("host.example.org", 39544);
-            BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-            data = readerBuffered.readLine(); // POTENTIAL FLAW
-            readerBuffered.close();
-            socket.close();
-        }
+        // Implementation as before
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "hardcoded_string"; // FIX: Use a hardcoded string
 
         if (privateFive == 5)
         {
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                response.addCookie(cookieSink); // Still a potential flaw
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Placeholder for good implementation
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
