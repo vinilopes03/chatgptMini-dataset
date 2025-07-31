@@ -337,4 +337,10 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_14 extend
             }
         }
     }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
 }
