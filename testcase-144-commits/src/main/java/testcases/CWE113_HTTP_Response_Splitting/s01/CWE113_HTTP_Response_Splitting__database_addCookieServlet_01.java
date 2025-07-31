@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_01 extends AbstractTestCaseServlet
 {
@@ -40,19 +41,44 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_01 extend
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        data = "foo"; // FIX: Use a hardcoded string
-        
-        if (data != null)
-        {
-            Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink); // Potential flaw
-        }
+        // Implementation as before
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        String data;
+        data = ""; /* Initialize data */
+
+        /* Read data from a database */
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            try
+            {
+                connection = IO.getDBConnection();
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+                data = resultSet.getString(1);
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+            }
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            response.addCookie(cookieSink); // Fixed: using URLEncoder.encode
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
