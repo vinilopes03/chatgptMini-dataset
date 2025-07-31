@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extends AbstractTestCaseServlet
 {
@@ -46,7 +47,8 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
