@@ -137,6 +137,122 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                /* read user input from console with readLine */
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
+        }
+        
+        if (data != null)
+        {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                /* read user input from console with readLine */
+                try
+                {
+                    readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                }
+            }
+        }
+        
+        if (data != null)
+        {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
