@@ -78,8 +78,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw: unverified input
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink: URL encode
+                response.addCookie(cookieSink);
             }
         }
     }
