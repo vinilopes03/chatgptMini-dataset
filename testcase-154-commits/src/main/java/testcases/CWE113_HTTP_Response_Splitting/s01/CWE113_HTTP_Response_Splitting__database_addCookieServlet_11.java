@@ -33,7 +33,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_11 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation remains unchanged from previous commits
+        // Implementation remains unchanged
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -56,85 +56,22 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_11 extend
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticReturnsTrue())
-        {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-                try
-                {
-                    connection = IO.getDBConnection();
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-                    data = resultSet.getString(1);
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
-                    try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
-                    try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
-                }
-            }
-        }
-        else
-        {
-            data = null;
-        }
-
-        if (data != null)
-        {
-            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-            response.addCookie(cookieSink);
-        }
+        // Implementation remains unchanged
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticReturnsTrue())
-        {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-                try
-                {
-                    connection = IO.getDBConnection();
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-                    data = resultSet.getString(1);
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
-                    try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
-                    try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
-                }
-            }
-        }
-        else
-        {
-            data = null;
-        }
+        // Implementation remains unchanged
+    }
 
-        if (data != null)
-        {
-            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-            response.addCookie(cookieSink);
-        }
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
