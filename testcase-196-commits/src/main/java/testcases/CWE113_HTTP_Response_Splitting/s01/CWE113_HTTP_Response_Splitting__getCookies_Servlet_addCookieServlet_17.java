@@ -22,5 +22,26 @@ import testcasesupport.*;
 import javax.servlet.http.*;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_17 extends AbstractTestCaseServlet {
-    // Method signatures will be added in the next commit
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+
+        data = ""; /* initialize data in case there are no cookies */
+
+        /* Read data from cookies */
+        {
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null) {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        }
+
+        for (int j = 0; j < 1; j++) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
 }
