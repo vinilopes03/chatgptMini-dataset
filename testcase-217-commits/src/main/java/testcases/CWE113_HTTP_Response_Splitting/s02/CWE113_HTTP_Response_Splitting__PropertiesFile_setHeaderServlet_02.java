@@ -20,11 +20,64 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_02 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of the bad method will be added later.
+        String data;
+        if (true)
+        {
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading object */
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -32,11 +85,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_02 
         // Initial implementation of the good method will be added later.
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
