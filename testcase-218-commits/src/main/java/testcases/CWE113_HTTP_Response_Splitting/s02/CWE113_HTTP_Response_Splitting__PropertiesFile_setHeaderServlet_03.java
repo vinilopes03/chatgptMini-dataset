@@ -107,3 +107,27 @@ private void goodG2B1(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+/* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (5 == 5)
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+    else
+    {
+        data = null; // Ensure data is initialized
+    }
+
+    if (5 == 5)
+    {
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
