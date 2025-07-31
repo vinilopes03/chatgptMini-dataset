@@ -73,7 +73,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_13 ext
         String data;
         if (IO.STATIC_FINAL_FIVE == 5)
         {
-            data = "foo"; // Use a hardcoded string
+            data = "foo";
         }
         else
         {
@@ -89,10 +89,40 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_13 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            /* get environment variable ADD */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
