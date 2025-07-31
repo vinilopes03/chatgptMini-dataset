@@ -62,7 +62,13 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_08 extend
                 }
                 finally
                 {
-                    // Close database objects
+                    try {
+                        if (resultSet != null) resultSet.close();
+                        if (preparedStatement != null) preparedStatement.close();
+                        if (connection != null) connection.close();
+                    } catch (SQLException e) {
+                        IO.logger.log(Level.WARNING, "Error closing resources", e);
+                    }
                 }
             }
         }
