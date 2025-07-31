@@ -97,12 +97,24 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 ext
             }
             break;
         default:
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
             data = null;
             break;
         }
 
-        // Additional code for processing 'data' will be added in the next commit
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
