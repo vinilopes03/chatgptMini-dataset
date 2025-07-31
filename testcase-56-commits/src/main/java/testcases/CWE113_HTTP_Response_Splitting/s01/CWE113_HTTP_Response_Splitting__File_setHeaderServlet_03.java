@@ -134,11 +134,129 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing second 5==5 to 5!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5==5)
+        {
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read data from file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                        if (readerInputStream != null) readerInputStream.close();
+                        if (streamFileInput != null) streamFileInput.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (5!=5)
+        {
+            /* INCIDENTAL: This block will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5==5)
+        {
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read data from file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                        if (readerInputStream != null) readerInputStream.close();
+                        if (streamFileInput != null) streamFileInput.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (5==5)
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Additional good methods will be implemented later
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
