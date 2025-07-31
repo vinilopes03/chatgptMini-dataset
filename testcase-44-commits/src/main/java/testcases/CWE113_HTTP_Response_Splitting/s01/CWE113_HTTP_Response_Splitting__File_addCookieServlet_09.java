@@ -72,8 +72,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_09 extends Ab
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fixed vulnerability
                 response.addCookie(cookieSink);
             }
         }
