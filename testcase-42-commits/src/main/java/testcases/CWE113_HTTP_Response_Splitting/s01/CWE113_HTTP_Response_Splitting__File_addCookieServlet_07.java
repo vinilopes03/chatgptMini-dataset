@@ -78,6 +78,13 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodB2G1(request, response);
+        // Other good methods can be added here
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateFive == 5)
         {
@@ -93,12 +100,12 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Still a potential flaw but from hardcoded data
+                response.addCookie(cookieSink); // Still a flaw but uses hardcoded data
             }
         }
     }
 
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFive == 5)
@@ -131,12 +138,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
             data = null;
         }
 
-        if (privateFive != 5)
-        {
-            // Incidental dead code
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (privateFive == 5)
         {
             if (data != null)
             {
