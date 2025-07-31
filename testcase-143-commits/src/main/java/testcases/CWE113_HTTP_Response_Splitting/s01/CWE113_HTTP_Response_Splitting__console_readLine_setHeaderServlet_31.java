@@ -20,11 +20,38 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_31 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to implement bad behavior
+        String dataCopy;
+        {
+            String data = ""; // Initialize data
+
+            // Read user input from console with readLine
+            try (InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                // POTENTIAL FLAW: Read data from the console using readLine
+                data = readerBuffered.readLine();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
