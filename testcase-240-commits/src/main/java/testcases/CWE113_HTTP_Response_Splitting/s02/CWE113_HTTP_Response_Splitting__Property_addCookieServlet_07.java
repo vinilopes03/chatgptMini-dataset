@@ -31,7 +31,29 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
         String data;
         if (privateFive==5)
         {
-            data = System.getProperty("user.home"); // Read data from a system property
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFive==5)
+        {
+            data = "foo"; // Good source: hardcoded string
         }
         else
         {
@@ -43,14 +65,9 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw: Input not verified
+                response.addCookie(cookieSink); // Still a flaw, needs encoding
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method will be implemented in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
