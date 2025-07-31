@@ -36,19 +36,16 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
         {
         case 6:
             data = ""; /* Initialize data */
-            /* Read data from a database */
+            // Read data from a database
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
                     data = resultSet.getString(1);
                 }
                 catch (SQLException exceptSql)
@@ -57,42 +54,10 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
                 }
                 finally
                 {
-                    /* Close database objects */
-                    try
-                    {
-                        if (resultSet != null)
-                        {
-                            resultSet.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
-                    }
-
-                    try
-                    {
-                        if (preparedStatement != null)
-                        {
-                            preparedStatement.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
-                    }
-
-                    try
-                    {
-                        if (connection != null)
-                        {
-                            connection.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
-                    }
+                    // Close database objects
+                    try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                    try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                    try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
                 }
             }
             break;
@@ -107,8 +72,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
-                response.addCookie(cookieSink);
+                response.addCookie(cookieSink); // Potential flaw
             }
             break;
         default:
@@ -119,7 +83,30 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for implementation
+        String data;
+        switch (5)
+        {
+        case 6:
+            data = null; // This will not run
+            break;
+        default:
+            data = "foo"; // Hardcoded string
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+            break;
+        default:
+            // This will not run
+            break;
+        }
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
