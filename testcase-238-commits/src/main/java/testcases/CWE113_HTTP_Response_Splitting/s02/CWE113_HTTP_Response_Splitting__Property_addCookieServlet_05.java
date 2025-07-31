@@ -32,7 +32,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
         String data;
         if (privateTrue)
         {
-            /* get system property user.home */
             data = System.getProperty("user.home"); // POTENTIAL FLAW
         }
         else
@@ -45,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -53,7 +51,54 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented in later commits.
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse) // This branch will not execute
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
