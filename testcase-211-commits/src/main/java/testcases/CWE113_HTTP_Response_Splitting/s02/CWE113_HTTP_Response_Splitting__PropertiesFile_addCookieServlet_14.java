@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_14 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -40,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_14 
                 {
                     streamFileInput = new FileInputStream("../common/config.properties");
                     properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
                     data = properties.getProperty("data");
                 }
                 catch (IOException exceptIO)
@@ -81,21 +82,52 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_14 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.staticFive != 5)
+        if (IO.staticFive == 5)
         {
-            data = null; // Will not run
+            data = ""; /* Initialize data */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
-        if (IO.staticFive == 5)
+        if (IO.staticFive != 5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
