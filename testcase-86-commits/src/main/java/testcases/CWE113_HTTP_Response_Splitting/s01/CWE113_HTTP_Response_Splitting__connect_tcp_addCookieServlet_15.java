@@ -81,7 +81,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 ext
                         IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
                     }
 
-                    /* clean up socket objects */
                     try
                     {
                         if (socket != null)
@@ -117,9 +116,40 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_15 ext
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial commit with method signature
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
