@@ -81,7 +81,19 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 ext
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in later commits
+        String data;
+        if (IO.staticTrue) {
+            data = "foo"; // Good hardcoded string
+        } else {
+            data = null;
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a potential flaw, but using good source
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
