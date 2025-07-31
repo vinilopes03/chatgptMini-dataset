@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -65,7 +66,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
