@@ -83,23 +83,59 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_TRUE to IO.STATIC_FINAL_FALSE */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G1() - use badsource and goodsink by changing second IO.STATIC_FINAL_TRUE to IO.STATIC_FINAL_FALSE */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.STATIC_FINAL_FALSE)
+        if (IO.STATIC_FINAL_TRUE)
         {
-            data = null;
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = null;
         }
 
-        if (IO.STATIC_FINAL_TRUE)
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -107,7 +143,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
