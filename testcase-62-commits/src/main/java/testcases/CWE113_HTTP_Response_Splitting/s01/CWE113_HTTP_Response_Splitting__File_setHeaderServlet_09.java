@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -45,7 +47,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -82,9 +83,31 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_09 extends Ab
         }
     }
 
+    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_TRUE to IO.STATIC_FINAL_FALSE */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented later
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
