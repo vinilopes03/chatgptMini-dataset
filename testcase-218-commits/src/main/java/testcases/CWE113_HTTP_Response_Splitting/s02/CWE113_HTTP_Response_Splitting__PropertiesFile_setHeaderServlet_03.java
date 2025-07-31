@@ -131,3 +131,62 @@ private void goodG2B2(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+/* goodB2G1() - use badsource and goodsink by changing second 5==5 to 5!=5 */
+private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (5 == 5)
+    {
+        data = ""; /* Initialize data */
+        /* retrieve the property */
+        {
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                /* POTENTIAL FLAW: Read data from a .properties file */
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                /* Close stream reading object */
+                try
+                {
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+    }
+    else
+    {
+        data = null; // Ensure data is initialized
+    }
+
+    if (5 != 5)
+    {
+        IO.writeLine("Benign, fixed string");
+    }
+    else
+    {
+        if (data != null)
+        {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+}
