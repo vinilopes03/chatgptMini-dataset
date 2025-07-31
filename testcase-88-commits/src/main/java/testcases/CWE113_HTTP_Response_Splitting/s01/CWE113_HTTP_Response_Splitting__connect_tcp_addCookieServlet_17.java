@@ -43,7 +43,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = "foo"; // Good Source
-
         for (int j = 0; j < 1; j++)
         {
             if (data != null)
@@ -57,8 +56,36 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = ""; /* Initialize data */
-        // Code for reading data from TCP connection (similar to bad method)
-        // But encode the data before adding to cookie
+        {
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup code
+            }
+        }
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encode data
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
