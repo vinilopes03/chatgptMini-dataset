@@ -74,6 +74,21 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_01 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 }
