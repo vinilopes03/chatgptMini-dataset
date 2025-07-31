@@ -48,7 +48,24 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        String data;
+        if (privateFive == 5)
+        {
+            data = "hardcoded_value"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null; // To avoid compiler error
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // No flaw here
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
