@@ -48,7 +48,12 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
     /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for goodG2B implementation
+        String data = "foo"; // FIX: Use a hardcoded string
+
+        if (data != null) {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     /* goodB2G() - use badsource and goodsink */
