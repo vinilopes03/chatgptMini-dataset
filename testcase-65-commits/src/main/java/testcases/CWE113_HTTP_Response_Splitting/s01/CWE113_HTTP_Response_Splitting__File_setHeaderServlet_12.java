@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends AbstractTestCaseServlet
 {
@@ -88,6 +89,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12 extends Ab
         {
             if (data != null)
             {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
