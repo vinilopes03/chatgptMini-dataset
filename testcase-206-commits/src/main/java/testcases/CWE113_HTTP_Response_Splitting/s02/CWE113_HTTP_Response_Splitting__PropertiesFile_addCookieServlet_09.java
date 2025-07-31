@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_09 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -114,7 +116,60 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_09 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        // Method implementation to follow...
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading object */
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Ensuring data is initialized
+        }
+
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
