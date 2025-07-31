@@ -86,6 +86,15 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        String data = "foo"; // FIX: Use a hardcoded string
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
