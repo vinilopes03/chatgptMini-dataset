@@ -99,6 +99,15 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_12 extend
                 response.addCookie(cookieSink);
             }
         }
+        else
+        {
+            if (data != null) 
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
