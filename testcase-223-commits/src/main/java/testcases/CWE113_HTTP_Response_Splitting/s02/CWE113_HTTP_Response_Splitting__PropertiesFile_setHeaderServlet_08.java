@@ -52,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
                 {
                     streamFileInput = new FileInputStream("../common/config.properties");
                     properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
                     data = properties.getProperty("data");
                 }
                 catch (IOException exceptIO)
@@ -89,7 +88,14 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -99,8 +105,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded good input
         }
 
         if (privateReturnsTrue())
@@ -112,14 +117,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateReturnsTrue())
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded good input
         }
         else
         {
@@ -135,7 +138,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
         }
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -190,7 +192,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
         }
     }
 
-    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -239,14 +240,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_08 
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        goodG2B1(request, response);
-        goodG2B2(request, response);
-        goodB2G1(request, response);
-        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
