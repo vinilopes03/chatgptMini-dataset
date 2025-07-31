@@ -20,27 +20,26 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_10 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticTrue)
+        if (IO.staticFalse)
         {
-            data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
-            {
-                Cookie cookieSources[] = request.getCookies();
-                if (cookieSources != null && cookieSources.length > 0)
-                {
-                    /* POTENTIAL FLAW: Read data from the first cookie value */
-                    data = cookieSources[0].getValue();
-                }
-            }
+            data = null; // Will not be used
         }
         else
         {
-            data = null; // Will not be used
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (IO.staticTrue)
@@ -56,7 +55,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good implementation will go here
+        goodG2B1(request, response);
+        // Other good methods will go here
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
