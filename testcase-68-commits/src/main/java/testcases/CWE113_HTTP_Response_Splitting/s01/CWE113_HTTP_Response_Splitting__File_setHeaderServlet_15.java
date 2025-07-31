@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -60,7 +61,48 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added later
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = "foo"; // Use a hardcoded string
+
+        // Set header with safe data
+        response.setHeader("Location", "/author.jsp?lang=" + data);
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
+
+        // Try to read from a file
+        File file = new File("C:\\data.txt");
+        FileInputStream streamFileInput = null;
+        InputStreamReader readerInputStream = null;
+        BufferedReader readerBuffered = null;
+        try {
+            streamFileInput = new FileInputStream(file);
+            readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+            readerBuffered = new BufferedReader(readerInputStream);
+            data = readerBuffered.readLine(); // Read data from the file
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        } finally {
+            // Close resources
+            try {
+                if (readerBuffered != null) readerBuffered.close();
+                if (readerInputStream != null) readerInputStream.close();
+                if (streamFileInput != null) streamFileInput.close();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error closing streams", exceptIO);
+            }
+        }
+
+        // Encode data to prevent HTTP Response Splitting
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
