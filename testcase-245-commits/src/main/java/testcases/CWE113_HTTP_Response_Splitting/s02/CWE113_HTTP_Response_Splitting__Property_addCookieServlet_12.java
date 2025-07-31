@@ -53,11 +53,9 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_12 extend
         }
     }
 
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        // Using a hardcoded string to prevent issues
-        data = "foo";
+        String data = "foo"; // Hardcoded string
         
         if(IO.staticReturnsTrueOrFalse())
         {
@@ -72,6 +70,41 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_12 extend
         {
             // Additional path for demonstration
         }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = "foo"; // fallback for the safe path
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+        else
+        {
+            // Additional path for demonstration
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
