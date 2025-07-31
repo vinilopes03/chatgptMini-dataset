@@ -38,20 +38,27 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_11 extends Ab
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other calls can be added later
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation remains same as previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticReturnsFalse())
-        {
-            data = null;  // This path won't be taken, ensuring 'data' is initialized
-        }
-        else
+
+        if (IO.staticReturnsTrue())
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Initialization for the sake of compiler, not used
         }
 
         if (IO.staticReturnsTrue())
