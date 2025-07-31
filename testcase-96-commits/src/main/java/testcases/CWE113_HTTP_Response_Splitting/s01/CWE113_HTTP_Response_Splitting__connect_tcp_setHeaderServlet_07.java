@@ -35,7 +35,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
         if (privateFive==5)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -75,7 +74,23 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_07 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        String data;
+        if (privateFive==5)
+        {
+            data = "foo"; // Using a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive==5)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
