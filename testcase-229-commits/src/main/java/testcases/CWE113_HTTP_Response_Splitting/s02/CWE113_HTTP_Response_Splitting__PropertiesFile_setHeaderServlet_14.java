@@ -65,6 +65,26 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
         String data;
         if (IO.staticFive==5) {
             data = ""; /* Initialize data */
+            // properties loading code...
+        } else {
+            data = null; // Make sure data is initialized
+        }
+
+        if (IO.staticFive!=5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFive==5) {
+            data = ""; /* Initialize data */
             Properties properties = new Properties();
             FileInputStream streamFileInput = null;
             try {
@@ -82,9 +102,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
             data = null; // Make sure data is initialized
         }
 
-        if (IO.staticFive!=5) {
-            IO.writeLine("Benign, fixed string");
-        } else {
+        if (IO.staticFive==5) {
             if (data != null) {
                 /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 data = URLEncoder.encode(data, "UTF-8");
@@ -94,7 +112,9 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Other good methods remain to be implemented...
+        goodG2B1(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
