@@ -98,8 +98,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_09 extend
         }
         else
         {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
-             * but ensure data is inititialized before the Sink to avoid compiler errors */
             data = null;
         }
 
@@ -116,7 +114,26 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_09 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method implementation will go here
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
