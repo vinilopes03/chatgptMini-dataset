@@ -64,7 +64,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in subsequent commits
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
