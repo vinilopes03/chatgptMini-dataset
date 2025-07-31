@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extends AbstractTestCaseServlet
 {
@@ -33,16 +34,13 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
         if (IO.STATIC_FINAL_FIVE==5)
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
                     data = resultSet.getString(1); // POTENTIAL FLAW
@@ -90,15 +88,19 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Good source
         }
 
-        if (IO.STATIC_FINAL_FIVE==5)
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good Sink
                 response.addCookie(cookieSink);
             }
         }
