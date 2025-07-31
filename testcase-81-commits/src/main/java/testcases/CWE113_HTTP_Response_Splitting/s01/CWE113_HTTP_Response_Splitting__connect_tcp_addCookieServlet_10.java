@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -90,8 +91,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 ext
 
         if (IO.staticTrue) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Still a potential flaw, but using good source
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink); // Now safe
             }
         }
     }
