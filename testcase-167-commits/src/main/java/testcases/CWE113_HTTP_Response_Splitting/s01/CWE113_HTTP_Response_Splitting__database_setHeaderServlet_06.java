@@ -50,7 +50,9 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extend
 
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            // FIX: URL encode the data before including it in the header
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Good sink
         }
     }
 
