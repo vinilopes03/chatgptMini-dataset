@@ -45,7 +45,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
         if (privateReturnsTrue())
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -55,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -64,7 +62,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
                 }
                 finally
                 {
-                    /* Clean up resources */
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                     try { if (socket != null) socket.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO); }
@@ -81,7 +78,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -89,7 +85,25 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_08 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        String data;
+        if (privateReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
