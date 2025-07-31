@@ -65,7 +65,19 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_01 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B(request, response); // Calling the good G2B method
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // FIX: Use a hardcoded string
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // POTENTIAL FLAW
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
