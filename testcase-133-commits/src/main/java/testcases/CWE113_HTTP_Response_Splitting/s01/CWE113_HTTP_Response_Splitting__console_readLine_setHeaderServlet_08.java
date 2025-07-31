@@ -1,20 +1,3 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_08.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-08.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: console_readLine Read data from the console using readLine()
-* GoodSource: A hardcoded string
-* Sinks: setHeaderServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to setHeader()
-* Flow Variant: 08 Control flow: if(privateReturnsTrue()) and if(privateReturnsFalse())
-*
-* */
-
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
@@ -67,7 +50,8 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
