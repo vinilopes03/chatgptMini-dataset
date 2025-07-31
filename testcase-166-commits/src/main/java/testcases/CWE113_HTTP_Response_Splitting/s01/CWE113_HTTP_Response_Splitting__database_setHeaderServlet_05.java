@@ -43,12 +43,9 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
                     data = resultSet.getString(1);
                 }
                 catch (SQLException exceptSql)
@@ -57,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
                 }
                 finally
                 {
-                    /* Close database objects */
                     try
                     {
                         if (resultSet != null) resultSet.close();
@@ -80,7 +76,28 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -88,7 +105,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
