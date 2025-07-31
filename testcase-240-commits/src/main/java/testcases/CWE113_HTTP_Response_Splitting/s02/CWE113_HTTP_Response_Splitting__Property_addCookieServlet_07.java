@@ -53,19 +53,19 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_07 extend
         String data;
         if (privateFive==5)
         {
-            data = "foo"; // Good source: hardcoded string
+            data = "foo";
         }
         else
         {
-            data = null; // Dead code, will not execute
+            data = null;
         }
 
         if (privateFive==5)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Still a flaw, needs encoding
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good: URLEncoded
+                response.addCookie(cookieSink);
             }
         }
     }
