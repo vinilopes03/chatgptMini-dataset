@@ -40,7 +40,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
+            // Read data from a database
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
@@ -71,7 +71,11 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented later
+        String data = "foo"; // Using a hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
