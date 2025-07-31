@@ -80,8 +80,23 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
         if (privateFalse) {
             data = null; // Will not be used
         } else {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Fixed string used as data
+        }
+
+        if (privateTrue) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (privateTrue) {
+            data = "foo"; // Fixed string used as data
+        } else {
+            data = null; // Will not be used
         }
 
         if (privateTrue) {
@@ -93,7 +108,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
-        // More good methods will be implemented in future commits
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
