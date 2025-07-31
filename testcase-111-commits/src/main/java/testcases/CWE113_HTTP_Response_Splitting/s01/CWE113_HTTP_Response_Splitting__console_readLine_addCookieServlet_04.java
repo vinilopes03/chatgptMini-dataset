@@ -129,3 +129,27 @@ private void goodG2B1(HttpServletRequest request, HttpServletResponse response) 
         }
     }
 }
+
+private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+{
+    String data;
+    if (PRIVATE_STATIC_FINAL_TRUE)
+    {
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+    }
+    else
+    {
+        data = null; // This block will never execute
+    }
+
+    if (PRIVATE_STATIC_FINAL_TRUE)
+    {
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
+    }
+}
