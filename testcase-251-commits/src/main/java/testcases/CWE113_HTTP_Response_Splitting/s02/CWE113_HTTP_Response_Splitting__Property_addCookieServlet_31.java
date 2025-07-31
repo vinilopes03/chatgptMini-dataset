@@ -79,7 +79,26 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_31 extend
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        String dataCopy;
+        {
+            String data;
+
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
