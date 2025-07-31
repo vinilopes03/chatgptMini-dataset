@@ -60,7 +60,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
 
@@ -74,9 +73,66 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        if (IO.staticReturnsTrue())
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue();
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsFalse())
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation will be done in later commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        // goodB2G2 will be implemented in the next commit
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
