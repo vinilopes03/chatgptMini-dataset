@@ -31,12 +31,87 @@ import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
-    /* The two variables below are declared "final", so a tool should
-     * be able to identify that reads of these will always return their
-     * initialized values.
-     */
     private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
     private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
 
-    // Add methods in subsequent commits
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try
+                {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* clean up stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null)
+                        {
+                            readerBuffered.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (readerInputStream != null)
+                        {
+                            readerInputStream.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+
+                    try
+                    {
+                        if (socket != null)
+                        {
+                            socket.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                    }
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    // Add good methods in subsequent commits
 }
