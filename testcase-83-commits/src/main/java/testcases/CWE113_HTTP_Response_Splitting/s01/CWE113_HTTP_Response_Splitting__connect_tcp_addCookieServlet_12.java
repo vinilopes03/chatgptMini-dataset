@@ -99,7 +99,12 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 ext
             data = "foo"; // Use a hardcoded string for the else case
         }
 
-        // Further code for bad sink will be added later
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
