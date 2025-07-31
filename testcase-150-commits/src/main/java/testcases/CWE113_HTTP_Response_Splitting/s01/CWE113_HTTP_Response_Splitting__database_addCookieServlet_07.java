@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extends AbstractTestCaseServlet
 {
@@ -113,18 +114,88 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data = ""; /* Initialize data */
+        if (privateFive == 5)
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                /* setup the connection */
+                connection = IO.getDBConnection();
+                /* prepare and execute a (hardcoded) query */
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+                data = resultSet.getString(1); // Potential flaw
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+            }
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encoding the data
+                response.addCookie(cookieSink); // Safe to add
+            }
+        }
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data = ""; /* Initialize data */
+        if (privateFive == 5)
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                /* setup the connection */
+                connection = IO.getDBConnection();
+                /* prepare and execute a (hardcoded) query */
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+                data = resultSet.getString(1); // Potential flaw
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+            }
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Encoding the data
+                response.addCookie(cookieSink); // Safe to add
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
