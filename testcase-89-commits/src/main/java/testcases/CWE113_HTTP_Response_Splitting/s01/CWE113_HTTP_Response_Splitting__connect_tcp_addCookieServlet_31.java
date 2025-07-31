@@ -48,7 +48,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_31 ext
             String data = dataCopy;
 
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: Use URLEncoder
                 response.addCookie(cookieSink);
             }
         }
