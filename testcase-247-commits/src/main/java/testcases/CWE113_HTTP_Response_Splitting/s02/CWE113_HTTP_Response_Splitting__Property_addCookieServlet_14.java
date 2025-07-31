@@ -55,8 +55,29 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = "foo";
+        }
+        else
+        {
+            data = null; // for completeness
         }
 
         if (IO.staticFive==5)
@@ -72,6 +93,7 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_14 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
