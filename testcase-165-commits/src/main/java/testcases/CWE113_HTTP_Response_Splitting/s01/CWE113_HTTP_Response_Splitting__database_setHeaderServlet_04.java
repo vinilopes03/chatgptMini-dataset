@@ -74,6 +74,8 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
         String data = "foo"; // Using a hardcoded string
         if (data != null)
         {
+            // FIX: Use URLEncoder to encode the data
+            data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
