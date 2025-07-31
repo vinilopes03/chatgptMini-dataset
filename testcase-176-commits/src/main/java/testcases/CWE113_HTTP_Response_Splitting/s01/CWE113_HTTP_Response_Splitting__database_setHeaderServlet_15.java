@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extends AbstractTestCaseServlet
 {
@@ -39,7 +40,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
             connection = IO.getDBConnection();
             preparedStatement = connection.prepareStatement("select name from users where id=0");
             resultSet = preparedStatement.executeQuery();
-            // POTENTIAL FLAW: Read data from a database query resultset
             if (resultSet.next()) {
                 data = resultSet.getString(1);
             }
@@ -50,13 +50,11 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
         }
         finally
         {
-            // Close database objects
             try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
             try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
             try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
         }
 
-        // Potentially vulnerable header setting
         if (data != null)
         {
             response.setHeader("Location", "/author.jsp?lang=" + data);
@@ -65,7 +63,11 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_15 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data = "foo"; // Use a hardcoded string
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
