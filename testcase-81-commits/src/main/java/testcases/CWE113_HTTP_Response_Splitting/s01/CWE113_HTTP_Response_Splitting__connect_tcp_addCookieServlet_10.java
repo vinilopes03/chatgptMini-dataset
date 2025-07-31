@@ -82,9 +82,140 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 ext
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse
+        goodG2B1(request, response);
+        // goodG2B2() - use goodsource and badsink by reversing statements in first if
+        goodG2B2(request, response);
+        // goodB2G1() - use badsource and goodsink by changing second IO.staticTrue to IO.staticFalse
+        goodB2G1(request, response);
+        // goodB2G2() - use badsource and goodsink by reversing statements in second if
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFalse) {
+            data = null; // Dead code
+        } else {
+            data = "foo"; // Good hardcoded string
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a potential flaw
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data;
         if (IO.staticTrue) {
             data = "foo"; // Good hardcoded string
+        } else {
+            data = null; // Dead code
+        }
+
+        if (IO.staticTrue) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a potential flaw
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticTrue) {
+            data = ""; /* Initialize data */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // POTENTIAL FLAW
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                } finally {
+                    try {
+                        if (readerBuffered != null) {
+                            readerBuffered.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+                    try {
+                        if (readerInputStream != null) {
+                            readerInputStream.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                    try {
+                        if (socket != null) {
+                            socket.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                    }
+                }
+            }
+        } else {
+            data = null;
+        }
+
+        if (IO.staticFalse) {
+            IO.writeLine("Benign, fixed string"); // Dead code
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
+                response.addCookie(cookieSink); // Now safe
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticTrue) {
+            data = ""; /* Initialize data */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
+                try {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // POTENTIAL FLAW
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                } finally {
+                    try {
+                        if (readerBuffered != null) {
+                            readerBuffered.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                    }
+                    try {
+                        if (readerInputStream != null) {
+                            readerInputStream.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                    }
+                    try {
+                        if (socket != null) {
+                            socket.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
+                    }
+                }
+            }
         } else {
             data = null;
         }
