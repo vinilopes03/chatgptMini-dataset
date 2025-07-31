@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extends AbstractTestCaseServlet
 {
@@ -69,12 +70,46 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
         }
         else
         {
-            data = null; // To avoid compiler error
+            data = null;
         }
         
         if (data != null)
         {
             response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+        }
+    }
+
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5 == 5)
+        {
+            data = ""; // Initialize data
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                connection = IO.getDBConnection();
+                preparedStatement = connection.prepareStatement("select name from users where id=0");
+                resultSet = preparedStatement.executeQuery();
+                data = resultSet.getString(1); // POTENTIAL FLAW
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+            }
+            finally
+            {
+                try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+            }
+        }
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Encode data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Use encoded data
         }
     }
 
