@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 extends AbstractTestCaseServlet
@@ -64,7 +64,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
 
         if (IO.STATIC_FINAL_FIVE == 5) {
             if (data != null) {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but controlled input
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
             }
         }
     }
