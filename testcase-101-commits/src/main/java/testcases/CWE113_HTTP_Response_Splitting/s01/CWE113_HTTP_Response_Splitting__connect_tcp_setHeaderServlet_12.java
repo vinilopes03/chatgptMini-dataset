@@ -36,28 +36,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
         String data;
         if(IO.staticReturnsTrueOrFalse())
         {
-            data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
-            {
-                Socket socket = null;
-                BufferedReader readerBuffered = null;
-                InputStreamReader readerInputStream = null;
-                try
-                {
-                    socket = new Socket("host.example.org", 39544);
-                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Cleanup code...
-                }
-            }
+            // Previous implementation...
         }
         else
         {
@@ -68,7 +47,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -80,7 +58,24 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in future commits
+        String data = "foo"; // Using a hardcoded string
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
