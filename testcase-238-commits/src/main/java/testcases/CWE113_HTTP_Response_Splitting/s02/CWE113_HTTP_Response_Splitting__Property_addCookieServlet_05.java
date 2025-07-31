@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extends AbstractTestCaseServlet
 {
     private boolean privateTrue = true;
@@ -27,7 +29,26 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_05 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be implemented in later commits.
+        String data;
+        if (privateTrue)
+        {
+            /* get system property user.home */
+            data = System.getProperty("user.home"); // POTENTIAL FLAW
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
