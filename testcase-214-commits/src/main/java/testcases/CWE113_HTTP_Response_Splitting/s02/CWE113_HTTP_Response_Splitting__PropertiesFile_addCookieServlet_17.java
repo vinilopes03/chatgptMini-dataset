@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -34,17 +35,55 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_17 
     /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    /* goodB2G() - use badsource and goodsink*/
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
-        /* FIX: Use a hardcoded string */
-        data = "foo";
+        data = ""; /* Initialize data */
 
-        for (int j = 0; j < 1; j++)
+        /* retrieve the property */
+        {
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+
+                /* POTENTIAL FLAW: Read data from a .properties file */
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+
+        for (int k = 0; k < 1; k++)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
@@ -53,6 +92,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_17 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
