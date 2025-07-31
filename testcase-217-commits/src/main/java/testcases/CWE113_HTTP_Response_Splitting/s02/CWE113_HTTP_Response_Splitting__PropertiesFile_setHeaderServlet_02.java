@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_02 extends AbstractTestCaseServlet
 {
@@ -50,7 +51,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_02 
                 }
                 finally
                 {
-                    /* Close stream reading object */
                     try
                     {
                         if (streamFileInput != null)
@@ -82,7 +82,25 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_02 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of the good method will be added later.
+        String data;
+        if (true)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
