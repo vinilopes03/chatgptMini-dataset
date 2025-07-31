@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_02 extends AbstractTestCaseServlet
 {
@@ -66,7 +67,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_02 extend
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -84,6 +84,35 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_02 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second true to false */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            /* get system property user.home */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; // This will never run
+        }
+
+        if (false)
+        {
+            // This block will never run
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
