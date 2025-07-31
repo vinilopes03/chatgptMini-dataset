@@ -144,12 +144,44 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
-        // Further good functions will be added in later commits
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
