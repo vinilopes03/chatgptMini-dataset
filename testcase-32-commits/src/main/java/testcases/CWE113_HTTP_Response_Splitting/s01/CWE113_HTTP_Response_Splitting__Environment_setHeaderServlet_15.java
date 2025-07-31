@@ -107,10 +107,72 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 ext
         }
     }
 
+    /* goodB2G1() - use badsource and goodsink by changing the second switch to switch(8) */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = System.getenv("ADD");
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (8)
+        {
+        case 7:
+            break; // This block will not run
+        default:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing the blocks in the second switch  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = System.getenv("ADD");
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
