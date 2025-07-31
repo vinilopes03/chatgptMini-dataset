@@ -31,40 +31,15 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_12 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // implementation from previous commit
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        data = ""; /* Initialize data */
-        File file = new File("C:\\data.txt");
-        FileInputStream streamFileInput = null;
-        InputStreamReader readerInputStream = null;
-        BufferedReader readerBuffered = null;
-        try
-        {
-            /* read string from file into data */
-            streamFileInput = new FileInputStream(file);
-            readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-            readerBuffered = new BufferedReader(readerInputStream);
-            /* POTENTIAL FLAW: Read data from a file */
-            data = readerBuffered.readLine();
-        }
-        catch (IOException exceptIO)
-        {
-            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-        }
-        finally
-        {
-            /* Close stream reading objects */
-            try
-            {
-                if (readerBuffered != null) readerBuffered.close();
-                if (readerInputStream != null) readerInputStream.close();
-                if (streamFileInput != null) streamFileInput.close();
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
-            }
-        }
-        
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
@@ -75,7 +50,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_12 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
