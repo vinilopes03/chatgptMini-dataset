@@ -26,7 +26,35 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of the bad method will be added in future commits
+        String data;
+        if (5 == 5)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null && cookieSources.length > 0)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            data = null;
+        }
+
+        if (5 == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
