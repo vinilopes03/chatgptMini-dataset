@@ -20,27 +20,32 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
-// Class definition
 public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_17 extends AbstractTestCaseServlet
 {
-    // Bad method that demonstrates HTTP response splitting vulnerability
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        // ... (to be implemented)
+
+        /* get system property user.home */
+        /* POTENTIAL FLAW: Read data from a system property */
+        data = System.getProperty("user.home");
+
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
-    // Good method that demonstrates a safe implementation
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Calls goodG2B and goodB2G methods (to be implemented)
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
