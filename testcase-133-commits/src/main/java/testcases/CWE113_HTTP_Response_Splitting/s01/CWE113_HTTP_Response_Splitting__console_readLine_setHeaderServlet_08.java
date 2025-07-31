@@ -20,6 +20,11 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_08 extends AbstractTestCaseServlet
 {
     private boolean privateReturnsTrue()
@@ -34,7 +39,37 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                try
+                {
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+        }
+        else
+        {
+            data = null; // For compilation purposes
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
