@@ -34,72 +34,51 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_13 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.STATIC_FINAL_FIVE==5)
+        if (IO.STATIC_FINAL_FIVE!=5)
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try
-                {
-                    /* read string from file into data */
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* Close stream reading objects */
-                    try
-                    {
-                        if (readerBuffered != null)
-                        {
-                            readerBuffered.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (readerInputStream != null)
-                        {
-                            readerInputStream.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            data = null;
         }
         else
         {
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
             data = null;
         }
 
@@ -108,15 +87,9 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_13 extends Ab
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added in the next commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
