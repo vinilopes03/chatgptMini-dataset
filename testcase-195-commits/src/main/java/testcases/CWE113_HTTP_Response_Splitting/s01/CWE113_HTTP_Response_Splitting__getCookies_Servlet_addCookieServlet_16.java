@@ -47,6 +47,16 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data;
+
+        // Use a hardcoded string
+        data = "foo";
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* Input is safe as it is hardcoded */
+            response.addCookie(cookieSink);
+        }
     }
 }
