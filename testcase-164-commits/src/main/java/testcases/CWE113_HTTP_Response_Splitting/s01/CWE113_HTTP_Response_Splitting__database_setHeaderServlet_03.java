@@ -30,10 +30,9 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (5 == 5) // Always true
+        if (5 == 5)
         {
             data = ""; // Initialize data
-            // Read data from a database
             Connection connection = null;
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
@@ -50,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
             }
             finally
             {
-                // Close database objects
                 try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
                 try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
                 try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -64,7 +62,20 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data;
+        if (5 == 5)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null; // To avoid compiler error
+        }
+        
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
