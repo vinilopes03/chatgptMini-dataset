@@ -25,7 +25,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        data = System.getenv("ADD"); // Read data from an environment variable
+        data = System.getenv("ADD");
 
         if (data != null)
         {
@@ -33,9 +33,19 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
         }
     }
 
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for implementation
+        goodG2B(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
