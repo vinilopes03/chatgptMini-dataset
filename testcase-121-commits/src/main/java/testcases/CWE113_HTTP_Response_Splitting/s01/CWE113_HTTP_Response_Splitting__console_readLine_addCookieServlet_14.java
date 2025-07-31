@@ -94,7 +94,26 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added later
+        String data;
+        if (IO.staticFive!=5)
+        {
+            data = null; // Will not run
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
