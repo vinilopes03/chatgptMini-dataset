@@ -34,7 +34,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
         if (IO.staticFive==5)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             Socket socket = null;
             BufferedReader readerBuffered = null;
             InputStreamReader readerInputStream = null;
@@ -43,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
                 socket = new Socket("host.example.org", 39544);
                 readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-                /* Read data from socket */
                 data = readerBuffered.readLine();
             }
             catch (IOException exceptIO)
@@ -67,7 +65,29 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive!=5)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
@@ -75,7 +95,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_14 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
