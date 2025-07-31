@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends AbstractTestCaseServlet
 {
@@ -94,6 +95,52 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_04 extends Ab
             if (data != null)
             {
                 response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            }
+        }
+    }
+
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read data from file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    // Close streams
+                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
+                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
+                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
+                }
+            }
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // URL encode the data
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
             }
         }
     }
