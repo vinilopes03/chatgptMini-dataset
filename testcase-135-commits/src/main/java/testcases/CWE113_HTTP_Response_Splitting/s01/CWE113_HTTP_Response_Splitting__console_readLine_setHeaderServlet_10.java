@@ -118,10 +118,34 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will go here later
+        goodG2B2(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
