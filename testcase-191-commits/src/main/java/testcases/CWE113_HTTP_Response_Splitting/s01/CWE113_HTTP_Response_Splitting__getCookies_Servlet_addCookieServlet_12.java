@@ -26,7 +26,33 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented in later commits
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue(); // POTENTIAL FLAW
+            }
+        }
+        else
+        {
+            data = "foo"; // Not used in this branch
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // FLAW: Input not verified
+                response.addCookie(cookieSink);
+            }
+        }
+        else
+        {
+            // This branch is not executed in the bad case
+        }
     }
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
