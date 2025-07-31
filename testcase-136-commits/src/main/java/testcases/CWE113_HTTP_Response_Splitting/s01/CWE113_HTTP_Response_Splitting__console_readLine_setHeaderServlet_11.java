@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
@@ -40,8 +41,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
                 {
                     readerInputStream = new InputStreamReader(System.in, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from the console using readLine */
-                    data = readerBuffered.readLine();
+                    data = readerBuffered.readLine(); // POTENTIAL FLAW
                 }
                 catch (IOException exceptIO)
                 {
@@ -84,7 +84,30 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Code for good methods will be added later
+        goodG2B(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if(IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
