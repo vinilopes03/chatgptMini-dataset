@@ -33,15 +33,38 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation as in previous commit.
+        // Implementation as in previous commits.
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateTrue)
+        {
+            data = "foo";  // Using hardcoded string
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateTrue)
