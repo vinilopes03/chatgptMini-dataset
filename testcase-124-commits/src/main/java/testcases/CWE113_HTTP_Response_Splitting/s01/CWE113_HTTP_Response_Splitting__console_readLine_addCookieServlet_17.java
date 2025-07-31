@@ -47,6 +47,12 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data = "foo"; // FIX: Use a hardcoded string
 
         for (int j = 0; j < 1; j++) {
@@ -57,7 +63,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         }
     }
 
-    /* goodB2G() - use badsource and goodsink*/
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = ""; /* Initialize data */
