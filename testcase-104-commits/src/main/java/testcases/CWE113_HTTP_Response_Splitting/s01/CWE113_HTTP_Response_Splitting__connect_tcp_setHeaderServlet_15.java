@@ -39,12 +39,9 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
             InputStreamReader readerInputStream = null;
             try
             {
-                /* Read data using an outbound tcp connection */
                 socket = new Socket("host.example.org", 39544);
-                /* read input from socket */
                 readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-                /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                 data = readerBuffered.readLine();
             }
             catch (IOException exceptIO)
@@ -53,11 +50,16 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_15 ext
             }
             finally
             {
-                /* clean up stream reading objects */
                 try { if (readerBuffered != null) { readerBuffered.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                 try { if (readerInputStream != null) { readerInputStream.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                 try { if (socket != null) { socket.close(); } } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO); }
             }
+        }
+
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 }
