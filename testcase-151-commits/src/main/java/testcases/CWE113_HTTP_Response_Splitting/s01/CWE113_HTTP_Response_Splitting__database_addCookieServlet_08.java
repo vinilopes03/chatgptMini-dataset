@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_08 extends AbstractTestCaseServlet
 {
@@ -91,7 +92,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_08 extend
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
                 response.addCookie(cookieSink);
             }
         }
