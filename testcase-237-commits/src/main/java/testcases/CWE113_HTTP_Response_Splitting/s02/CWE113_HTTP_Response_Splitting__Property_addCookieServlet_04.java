@@ -49,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_04 extend
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -59,8 +58,29 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_04 extend
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // This part is unreachable
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
