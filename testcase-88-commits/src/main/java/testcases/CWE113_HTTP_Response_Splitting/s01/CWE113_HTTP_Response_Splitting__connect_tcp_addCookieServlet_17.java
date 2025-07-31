@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -35,10 +36,13 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
 
-        /* FIX: Use a hardcoded string */
-        data = "foo";
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Good Source
 
         for (int j = 0; j < 1; j++)
         {
@@ -48,6 +52,13 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+        // Code for reading data from TCP connection (similar to bad method)
+        // But encode the data before adding to cookie
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
