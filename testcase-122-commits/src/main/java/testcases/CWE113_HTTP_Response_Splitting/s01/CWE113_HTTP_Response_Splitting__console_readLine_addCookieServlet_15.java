@@ -32,7 +32,45 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation to be added
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                /* POTENTIAL FLAW: Read data from the console using readLine */
+                try
+                {
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -40,11 +78,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         // Method implementation to be added
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
