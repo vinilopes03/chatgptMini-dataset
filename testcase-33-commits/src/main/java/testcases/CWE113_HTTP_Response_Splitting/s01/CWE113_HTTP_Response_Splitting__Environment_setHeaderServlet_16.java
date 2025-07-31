@@ -69,7 +69,6 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_16 ext
         }
     }
 
-    /* goodB2G() - use badsource and goodsink */
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
