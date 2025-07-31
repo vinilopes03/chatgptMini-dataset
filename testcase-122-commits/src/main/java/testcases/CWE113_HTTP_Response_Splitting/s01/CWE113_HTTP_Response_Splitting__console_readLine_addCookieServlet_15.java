@@ -32,28 +32,25 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
+        // Implementation from previous commit
+    }
 
-        switch (6)
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (5)
         {
         case 6:
-            data = ""; /* Initialize data */
-            {
-                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
-                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
-                /* POTENTIAL FLAW: Read data from the console using readLine */
-                try
-                {
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-            }
+            data = null;
             break;
         default:
-            data = null;
+            /* FIX: Use a hardcoded string */
+            data = "foo";
             break;
         }
 
@@ -71,11 +68,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
             IO.writeLine("Benign, fixed string");
             break;
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation to be added
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
