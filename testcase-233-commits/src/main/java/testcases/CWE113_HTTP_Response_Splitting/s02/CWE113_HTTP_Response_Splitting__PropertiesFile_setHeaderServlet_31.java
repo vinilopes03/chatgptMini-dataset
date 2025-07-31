@@ -20,11 +20,33 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation will go here
+        String dataCopy;
+        {
+            String data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            try (FileInputStream streamFileInput = new FileInputStream("../common/config.properties")) {
+                properties.load(streamFileInput);
+                data = properties.getProperty("data"); /* POTENTIAL FLAW */
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); /* POTENTIAL FLAW */
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
