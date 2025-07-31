@@ -26,19 +26,39 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+            break;
+        default:
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Method implementation will be added in subsequent commits
     }
-    
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
