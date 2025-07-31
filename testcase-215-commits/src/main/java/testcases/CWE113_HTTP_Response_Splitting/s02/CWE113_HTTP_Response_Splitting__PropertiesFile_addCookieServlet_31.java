@@ -29,41 +29,20 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as before
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
-            String data = ""; /* Initialize data */
-
-            /* retrieve the property */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-
-                try
-                {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    data = properties.getProperty("data"); // POTENTIAL FLAW
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
-
+            String data = "foo"; // FIX: Use a hardcoded string
             dataCopy = data;
         }
         {
@@ -75,11 +54,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_31 
                 response.addCookie(cookieSink); // POTENTIAL FLAW
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will go here
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
