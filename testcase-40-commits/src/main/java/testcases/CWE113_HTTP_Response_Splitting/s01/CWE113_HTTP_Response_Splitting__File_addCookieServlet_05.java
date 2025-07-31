@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends AbstractTestCaseServlet
 {
@@ -68,6 +69,28 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_05 extends Ab
         if (privateTrue && data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // Add cookie safely
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "";
+        if (privateTrue)
+        {
+            File file = new File("C:\\data.txt");
+            try (FileInputStream streamFileInput = new FileInputStream(file);
+                 InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                 BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+                data = readerBuffered.readLine(); // Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        }
+
+        if (privateTrue && data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL encoding
             response.addCookie(cookieSink); // Add cookie safely
         }
     }
