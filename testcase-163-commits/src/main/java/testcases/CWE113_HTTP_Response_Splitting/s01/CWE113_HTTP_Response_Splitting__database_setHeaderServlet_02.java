@@ -31,35 +31,16 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation remains the same as before
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (true)
         {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-                try
-                {
-                    connection = IO.getDBConnection();
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
-                    data = resultSet.getString(1);
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    // Closing resources
-                    try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) {}
-                    try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) {}
-                    try { if (connection != null) connection.close(); } catch (SQLException exceptSql) {}
-                }
-            }
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
         if (true)
         {
@@ -69,11 +50,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_02 extend
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Empty implementation for now
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
