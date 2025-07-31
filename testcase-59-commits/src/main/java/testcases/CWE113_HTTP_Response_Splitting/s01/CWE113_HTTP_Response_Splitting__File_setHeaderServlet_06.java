@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
     private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
@@ -56,7 +58,20 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of good method
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            // FIX: Use a hardcoded string
+            data = "foo";
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
