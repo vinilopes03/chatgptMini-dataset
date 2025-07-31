@@ -30,12 +30,10 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
         case 6:
             data = ""; /* initialize data in case there are no cookies */
-            /* Read data from cookies */
             {
                 Cookie cookieSources[] = request.getCookies();
                 if (cookieSources != null)
                 {
-                    /* POTENTIAL FLAW: Read data from the first cookie value */
                     data = cookieSources[0].getValue();
                 }
             }
@@ -51,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
             break;
@@ -63,7 +60,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
