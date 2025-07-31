@@ -25,6 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extends AbstractTestCaseServlet
 {
     private int privateFive = 5;
@@ -65,7 +67,11 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Empty method for now
+        String data = "foo"; // Good source
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Still verifies data
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
