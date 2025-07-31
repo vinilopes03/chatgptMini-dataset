@@ -42,7 +42,23 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_01 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented later
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            response.addCookie(cookieSink);
+        }
     }
 
     /* Below is the main(). It is only used when building this testcase on
