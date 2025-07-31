@@ -20,6 +20,13 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.Socket;
+
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 extends AbstractTestCaseServlet
 {
     /* The variable below is not declared "final", but is never assigned
@@ -29,19 +36,32 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of bad method
+        String data = ""; /* Initialize data */
+        if (privateFive == 5)
+        {
+            /* Read data using an outbound tcp connection */
+            Socket socket = new Socket("host.example.org", 39544);
+            BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+            data = readerBuffered.readLine(); // POTENTIAL FLAW
+            readerBuffered.close();
+            socket.close();
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation of good method
+        // Placeholder for good implementation
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
