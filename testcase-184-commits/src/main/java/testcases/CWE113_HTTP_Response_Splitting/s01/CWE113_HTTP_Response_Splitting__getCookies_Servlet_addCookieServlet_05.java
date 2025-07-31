@@ -70,7 +70,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // GOOD SINK
                 response.addCookie(cookieSink);
             }
         }
