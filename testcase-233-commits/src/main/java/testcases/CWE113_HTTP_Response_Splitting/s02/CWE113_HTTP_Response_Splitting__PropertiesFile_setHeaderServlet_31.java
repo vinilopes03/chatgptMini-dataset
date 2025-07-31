@@ -51,7 +51,17 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good implementation will go here
+        String dataCopy;
+        {
+            String data = "hardcodedString"; /* FIX: Use a hardcoded string */
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); /* This is still a flaw */
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
