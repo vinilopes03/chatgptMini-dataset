@@ -33,32 +33,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if(IO.staticReturnsTrueOrFalse())
-        {
-            // Previous implementation...
-        }
-        else
-        {
-            data = "foo";
-        }
-
-        if(IO.staticReturnsTrueOrFalse())
-        {
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
-        else
-        {
-            // The other branch will be implemented later
-        }
+        // Previous implementation...
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Using a hardcoded string
+        // Previous implementation...
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup code...
+            }
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
 
         if(IO.staticReturnsTrueOrFalse())
         {
@@ -71,10 +82,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_12 ext
         }
         else
         {
-            if (data != null)
-            {
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
+            // The other branch will be implemented later
         }
     }
 
