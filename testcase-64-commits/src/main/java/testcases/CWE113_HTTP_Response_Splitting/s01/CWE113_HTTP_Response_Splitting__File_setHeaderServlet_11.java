@@ -79,15 +79,8 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (IO.staticReturnsTrue())
-        {
-            data = "foo"; // Using a hardcoded string
-        }
-        else
-        {
-            data = null; // Ensuring data is initialized
-        }
+        // Good case 1: Using hardcoded string
+        String data = "foo"; 
 
         if (IO.staticReturnsTrue())
         {
@@ -96,6 +89,13 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
                 data = URLEncoder.encode(data, "UTF-8"); // Encoding data for safety
                 response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
             }
+        }
+
+        // Additional good cases can be added here as necessary
+        if (IO.staticReturnsFalse())
+        {
+            // This branch will never execute, demonstrating dead code
+            response.setHeader("Location", "/author.jsp?lang=bar");
         }
     }
 
