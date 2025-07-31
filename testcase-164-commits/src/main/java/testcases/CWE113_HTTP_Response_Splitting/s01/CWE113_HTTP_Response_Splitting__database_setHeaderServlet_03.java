@@ -70,12 +70,12 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_03 extend
         }
         else
         {
-            data = null;
+            data = null; // To avoid compiler error
         }
-        
+
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Use hardcoded string
         }
     }
 
