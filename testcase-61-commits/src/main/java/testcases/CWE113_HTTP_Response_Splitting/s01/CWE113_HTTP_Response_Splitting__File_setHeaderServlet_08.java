@@ -47,19 +47,25 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateReturnsFalse())
-        {
-            data = null; // This block will not run
-        }
-        else
+        if (privateReturnsTrue())
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // This block will not run
         }
 
         if (privateReturnsTrue())
