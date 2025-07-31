@@ -67,10 +67,17 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_07 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Good source
+        String data = ""; // Initialize data
+        if (privateFive == 5)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Still verifies data
+            // URL-Encode to prevent HTTP Response Splitting
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
