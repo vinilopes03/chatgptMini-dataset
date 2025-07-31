@@ -1,0 +1,7 @@
+[
+  {
+    "filePath": "/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-35-commits/src/main/java/testcases/CWE113_HTTP_Response_Splitting/s01/CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31.java",
+    "line": 45,
+    "cwe": "CWE-113"
+  }
+]
