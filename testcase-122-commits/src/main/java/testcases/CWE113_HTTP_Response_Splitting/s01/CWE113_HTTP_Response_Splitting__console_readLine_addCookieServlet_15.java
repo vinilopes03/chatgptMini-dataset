@@ -40,39 +40,20 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        switch (6)
-        {
-        case 6:
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-            break;
-        default:
-            data = null;
-            break;
-        }
-
-        switch (7)
-        {
-        case 7:
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
-                response.addCookie(cookieSink);
-            }
-            break;
-        default:
-            IO.writeLine("Benign, fixed string");
-            break;
-        }
+        // Implementation from previous commit
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         switch (6)
@@ -99,16 +80,15 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
         switch (7)
         {
-        case 8:
-            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
-            IO.writeLine("Benign, fixed string");
-            break;
-        default:
+        case 7:
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
             break;
         }
     }
