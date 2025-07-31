@@ -1,20 +1,3 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-02.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: connect_tcp Read data using an outbound tcp connection
-* GoodSource: A hardcoded string
-* Sinks: addCookieServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to addCookie()
-* Flow Variant: 02 Control flow: if(true) and if(false)
-*
-* */
-
 package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
@@ -64,7 +47,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
