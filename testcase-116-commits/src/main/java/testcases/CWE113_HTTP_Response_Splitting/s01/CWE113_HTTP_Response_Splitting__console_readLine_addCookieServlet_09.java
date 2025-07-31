@@ -144,12 +144,42 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
         }
     }
 
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                /* POTENTIAL FLAW: Read data from the console using readLine */
+                data = readerBuffered.readLine();
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
         goodB2G1(request, response);
-        // Additional methods to be implemented in subsequent commits
+        goodB2G2(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
