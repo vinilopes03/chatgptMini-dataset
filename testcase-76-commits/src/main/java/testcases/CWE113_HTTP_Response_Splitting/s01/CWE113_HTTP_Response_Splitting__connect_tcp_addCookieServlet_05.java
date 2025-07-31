@@ -33,7 +33,36 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // ... (same as before)
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read data
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try { if (readerBuffered != null) { readerBuffered.close(); } } catch (IOException exceptIO) {}
+                try { if (readerInputStream != null) { readerInputStream.close(); } } catch (IOException exceptIO) {}
+                try { if (socket != null) { socket.close(); } } catch (IOException exceptIO) {}
+            }
+        }
+        if (privateTrue && data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // Potential flaw
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -48,13 +77,16 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
             data = "foo"; // Hardcoded string
         }
 
-        if (privateTrue)
+        if (privateTrue && data != null)
         {
-            if (data != null)
-            {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL Encode
-                response.addCookie(cookieSink); // Good Sink
-            }
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL Encode
+            response.addCookie(cookieSink); // Good Sink
         }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
