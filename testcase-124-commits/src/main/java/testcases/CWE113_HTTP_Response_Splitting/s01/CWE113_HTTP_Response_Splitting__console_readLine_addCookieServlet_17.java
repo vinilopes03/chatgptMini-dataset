@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -51,6 +52,25 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         for (int j = 0; j < 1; j++) {
             if (data != null) {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G() - use badsource and goodsink*/
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; /* Initialize data */
+
+        try (BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
+            data = readerBuffered.readLine();
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        for (int k = 0; k < 1; k++) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
