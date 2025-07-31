@@ -62,10 +62,30 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_17 extend
         }
     }
 
+    /* goodB2G() - use badsource and goodsink*/
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* get system property user.home */
+        /* POTENTIAL FLAW: Read data from a system property */
+        data = System.getProperty("user.home");
+
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // Calls goodB2G (to be implemented)
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
