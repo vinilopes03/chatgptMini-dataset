@@ -36,6 +36,8 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
     {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodG2B2(request, response);
+        goodB2G2(request, response);
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -43,40 +45,60 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
         // Implementation as in previous commit
     }
 
-    /* goodB2G1() - use badsource and goodsink by changing second IO.staticReturnsTrue() to IO.staticReturnsFalse() */
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.staticReturnsTrue())
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
             {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
                 try
                 {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    data = properties.getProperty("data");
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
                 }
                 catch (IOException exceptIO)
                 {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
                 }
             }
         }
@@ -85,15 +107,10 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
             data = null;
         }
 
-        if (IO.staticReturnsFalse())
-        {
-            IO.writeLine("Benign, fixed string");
-        }
-        else
+        if (IO.staticReturnsTrue())
         {
             if (data != null)
             {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
