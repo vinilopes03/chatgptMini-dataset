@@ -50,7 +50,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_11 
                 }
                 finally
                 {
-                    /* Close stream reading object */
                     try
                     {
                         if (streamFileInput != null)
@@ -75,7 +74,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_11 
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -83,7 +81,25 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_11 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented in the next commits
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo"; 
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if(IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
