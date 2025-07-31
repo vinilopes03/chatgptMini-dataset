@@ -38,7 +38,38 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_03 extends Ab
         if (5==5)
         {
             data = ""; /* Initialize data */
-            // Next steps will be implemented in future commits
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+                try
+                {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read data from file
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    /* Close stream reading objects */
+                    try
+                    {
+                        if (readerBuffered != null) readerBuffered.close();
+                        if (readerInputStream != null) readerInputStream.close();
+                        if (streamFileInput != null) streamFileInput.close();
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
