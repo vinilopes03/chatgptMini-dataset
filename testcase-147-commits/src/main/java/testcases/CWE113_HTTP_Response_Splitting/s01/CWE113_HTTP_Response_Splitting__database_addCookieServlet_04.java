@@ -118,10 +118,102 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    // Close database objects...
+                }
+            }
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            // This block will not execute
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // Safe use of data
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    // Close database objects...
+                }
+            }
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink); // Safe use of data
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        goodG2B1(request, response); // Call the good method
+        goodG2B1(request, response); // Call the first good method
         goodG2B2(request, response); // Call the second good method
+        goodB2G1(request, response);  // Call the first good B2G method
+        goodB2G2(request, response);  // Call the second good B2G method
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
