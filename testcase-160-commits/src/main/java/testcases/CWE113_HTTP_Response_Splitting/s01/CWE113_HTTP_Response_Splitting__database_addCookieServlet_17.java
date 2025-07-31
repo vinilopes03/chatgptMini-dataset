@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extends AbstractTestCaseServlet
 {
@@ -73,8 +74,44 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_17 extend
         }
     }
 
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = ""; // Initialize data
+
+        // Read data from a database
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            connection = IO.getDBConnection();
+            preparedStatement = connection.prepareStatement("select name from users where id=0");
+            resultSet = preparedStatement.executeQuery();
+            data = resultSet.getString(1); // POTENTIAL FLAW: Read data from a database query resultset
+        }
+        catch (SQLException exceptSql)
+        {
+            IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+        }
+        finally
+        {
+            // Close database objects
+            if (resultSet != null) resultSet.close();
+            if (preparedStatement != null) preparedStatement.close();
+            if (connection != null) connection.close();
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+            response.addCookie(cookieSink);
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // To be implemented
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 }
