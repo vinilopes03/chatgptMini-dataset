@@ -107,4 +107,9 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_12 
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException {
+        mainFromParent(args);
+    }
 }
