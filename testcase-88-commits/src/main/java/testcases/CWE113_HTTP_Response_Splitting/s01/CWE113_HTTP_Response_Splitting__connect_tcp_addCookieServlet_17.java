@@ -30,33 +30,15 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Bad method implementation
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        data = ""; /* Initialize data */
 
-        /* Read data using an outbound tcp connection */
-        {
-            Socket socket = null;
-            BufferedReader readerBuffered = null;
-            InputStreamReader readerInputStream = null;
-
-            try
-            {
-                socket = new Socket("host.example.org", 39544);
-                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-
-                /* POTENTIAL FLAW: Read data using an outbound tcp connection */
-                data = readerBuffered.readLine();
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                // Cleanup code here
-            }
-        }
+        /* FIX: Use a hardcoded string */
+        data = "foo";
 
         for (int j = 0; j < 1; j++)
         {
@@ -66,11 +48,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_17 ext
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
