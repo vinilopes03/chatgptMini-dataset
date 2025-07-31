@@ -35,7 +35,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
         if (IO.STATIC_FINAL_FIVE==5)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -45,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -54,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
                 }
                 finally
                 {
-                    // Clean up resources
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) {}
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) {}
                     try { if (socket != null) socket.close(); } catch (IOException exceptIO) {}
@@ -78,7 +75,25 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_13 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will go here later
+        String data;
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
