@@ -81,15 +81,22 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_09 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.STATIC_FINAL_TRUE)
+        if (IO.STATIC_FINAL_FALSE)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null; // Dead code
         }
         else
         {
-            data = null;
+            data = "foo"; // Fixed string
         }
 
         if (IO.STATIC_FINAL_TRUE)
@@ -97,7 +104,28 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_09 extends Ab
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Fixed string
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink);
             }
         }
