@@ -34,7 +34,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_09 ext
         if (IO.STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -44,7 +43,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_09 ext
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // POTENTIAL FLAW: Read data using an outbound tcp connection
+                    data = readerBuffered.readLine(); // POTENTIAL FLAW
                 }
                 catch (IOException exceptIO)
                 {
@@ -65,14 +64,36 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_09 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW: Input not verified before inclusion in header
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
             }
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        goodG2B1(request, response);
+        // Other good methods will be added in subsequent commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
