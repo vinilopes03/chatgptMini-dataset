@@ -75,8 +75,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_10 ext
 
         if (IO.staticTrue) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fixed sink
+                response.addCookie(cookieSink); // Now safe
             }
         }
     }
