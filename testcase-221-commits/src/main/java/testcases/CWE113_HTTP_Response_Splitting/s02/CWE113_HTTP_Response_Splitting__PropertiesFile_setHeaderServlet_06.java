@@ -73,7 +73,22 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_06 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method implementation will be added in subsequent commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (data != null)
+        {
+            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
