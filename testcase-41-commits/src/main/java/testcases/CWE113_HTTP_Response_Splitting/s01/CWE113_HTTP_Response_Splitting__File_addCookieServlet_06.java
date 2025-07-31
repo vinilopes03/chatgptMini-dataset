@@ -38,14 +38,19 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_06 extends Ab
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // ... [same implementation as previous commit] ...
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            data = null; // Dead code
+            data = "foo"; // Good source
         }
         else
         {
-            data = "foo"; // Good source
+            data = null; // Dead code
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
