@@ -46,7 +46,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data from a file */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -55,7 +54,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
                     try
                     {
                         if (readerBuffered != null)
@@ -103,7 +101,29 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
