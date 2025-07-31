@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 extends AbstractTestCaseServlet
 {
@@ -64,14 +65,38 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_09 ext
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
-            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
             response.addCookie(cookieSink);
         }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be completed in later commits
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    // Good method 1
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Use a hardcoded string
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
+    }
+
+    // Good method 2
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Use a hardcoded string
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
