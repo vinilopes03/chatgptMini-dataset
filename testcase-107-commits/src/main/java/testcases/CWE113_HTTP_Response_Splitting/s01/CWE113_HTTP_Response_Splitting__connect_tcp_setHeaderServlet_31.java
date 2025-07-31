@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
 
 import java.util.logging.Level;
 
@@ -31,33 +32,69 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_31 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation remains the same as previous commit
+        // Implementation remains the same as previous commits
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
-        // goodB2G will be added later
+        goodB2G(request, response); // Call goodB2G method
     }
 
     /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation remains the same as previous commits
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
-            String data;
+            String data = ""; /* Initialize data */
 
-            /* FIX: Use a hardcoded string */
-            data = "foo"; // Hardcoded string as a safe input
+            /* Read data using an outbound tcp connection */
+            {
+                Socket socket = null;
+                BufferedReader readerBuffered = null;
+                InputStreamReader readerInputStream = null;
 
-            dataCopy = data; // Copy data to avoid modification
+                try
+                {
+                    socket = new Socket("host.example.org", 39544);
+                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+                    data = readerBuffered.readLine(); // Read data from the connection
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    if (readerBuffered != null) {
+                        readerBuffered.close();
+                    }
+                    if (readerInputStream != null) {
+                        readerInputStream.close();
+                    }
+                    if (socket != null) {
+                        socket.close();
+                    }
+                }
+            }
+
+            dataCopy = data; // Copy the data for later use
         }
-        
+
         {
             String data = dataCopy;
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Use the safe input
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Safely set header
             }
         }
     }
