@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_03 extends AbstractTestCaseServlet
 {
@@ -49,7 +50,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_03 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = "foo"; // FIX: Use a hardcoded string
-        Cookie cookieSink = new Cookie("lang", data);
+        Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink with encoding
         response.addCookie(cookieSink); // Safe addition of cookie
     }
 
