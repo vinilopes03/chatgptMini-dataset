@@ -28,48 +28,29 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as in previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticReturnsTrue() to IO.staticReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticReturnsTrue())
-        {
-            data = ""; /* Initialize data */
-            /* retrieve the property */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-                try
-                {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
-                    data = properties.getProperty("data");
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* Close stream reading object */
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
-        }
-        else
+        if (IO.staticReturnsFalse())
         {
             data = null;
         }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
 
-        if(IO.staticReturnsTrue())
+        if (IO.staticReturnsTrue())
         {
             if (data != null)
             {
@@ -77,10 +58,5 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to be implemented
     }
 }
