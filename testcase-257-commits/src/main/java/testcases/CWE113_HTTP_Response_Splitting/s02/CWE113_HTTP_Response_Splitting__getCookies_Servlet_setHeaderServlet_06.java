@@ -1,20 +1,3 @@
-/* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_06.java
-Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
-Template File: sources-sinks-06.tmpl.java
-*/
-/*
-* @description
-* CWE: 113 HTTP Response Splitting
-* BadSource: getCookies_Servlet Read data from the first cookie using getCookies()
-* GoodSource: A hardcoded string
-* Sinks: setHeaderServlet
-*    GoodSink: URLEncode input
-*    BadSink : querystring to setHeader()
-* Flow Variant: 06 Control flow: if(PRIVATE_STATIC_FINAL_FIVE==5) and if(PRIVATE_STATIC_FINAL_FIVE!=5)
-*
-* */
-
 package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
@@ -43,7 +26,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
