@@ -67,7 +67,25 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method body will be added in future commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
