@@ -56,8 +56,30 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_03 extend
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (5==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (5==5)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
         }
 
         if (5==5)
@@ -73,6 +95,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_03 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be implemented in subsequent commits
+        goodG2B2(request, response);
     }
 }
