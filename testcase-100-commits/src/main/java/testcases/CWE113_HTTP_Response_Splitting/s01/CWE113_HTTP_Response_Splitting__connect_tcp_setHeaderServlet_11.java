@@ -28,6 +28,8 @@ import java.net.Socket;
 
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -40,25 +42,97 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 ext
         // Implementation from previous commit
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
+        // Implementation from previous commit
+    }
 
+    /* goodB2G1() - use badsource and goodsink by changing second IO.staticReturnsTrue() to IO.staticReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
         if (IO.staticReturnsTrue())
         {
-            data = "foo"; // FIX: Use a hardcoded string
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                if (readerBuffered != null) readerBuffered.close();
+                if (readerInputStream != null) readerInputStream.close();
+                if (socket != null) socket.close();
+            }
         }
         else
         {
-            data = null; // Ensure data is initialized
+            data = null;
+        }
+
+        if (IO.staticReturnsFalse())
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: URLEncode the data
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // POTENTIAL FLAW
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                if (readerBuffered != null) readerBuffered.close();
+                if (readerInputStream != null) readerInputStream.close();
+                if (socket != null) socket.close();
+            }
+        }
+        else
+        {
+            data = null;
         }
 
         if (IO.staticReturnsTrue())
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: URLEncode the data
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
@@ -67,7 +141,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_11 ext
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
-        // Add more good implementations later
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
