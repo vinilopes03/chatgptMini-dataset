@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 extends AbstractTestCaseServlet
 {
@@ -109,7 +110,22 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_12 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial method implementation will go here
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
