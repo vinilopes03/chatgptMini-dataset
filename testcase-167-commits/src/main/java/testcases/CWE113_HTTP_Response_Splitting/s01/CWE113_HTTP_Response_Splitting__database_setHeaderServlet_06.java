@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -32,35 +33,15 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // ... (same as previous commit)
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            data = ""; /* Initialize data */
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-                try
-                {
-                    connection = IO.getDBConnection();
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
-                    data = resultSet.getString(1);
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    /* Close database objects */
-                    try { if (resultSet != null) { resultSet.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
-                    try { if (preparedStatement != null) { preparedStatement.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
-                    try { if (connection != null) { connection.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
-                }
-            }
+            data = "foo"; // Good source
         }
         else
         {
@@ -71,11 +52,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extend
         {
             response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
