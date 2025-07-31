@@ -88,9 +88,53 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    /* goodB2G() - use badsource and goodsink by changing the second "if" so that
+     * both branches use the GoodSink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            /* Read data from cookies */
+            {
+                Cookie cookieSources[] = request.getCookies();
+                if (cookieSources != null)
+                {
+                    /* POTENTIAL FLAW: Read data from the first cookie value */
+                    data = cookieSources[0].getValue();
+                }
+            }
+        }
+        else
+        {
+            data = "foo"; // Hardcoded string for else case
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added later
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     /* Below is the main(). It is only used when building this testcase on
