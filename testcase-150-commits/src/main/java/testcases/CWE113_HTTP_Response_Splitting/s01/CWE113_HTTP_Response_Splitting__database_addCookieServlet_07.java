@@ -43,8 +43,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
                 /* prepare and execute a (hardcoded) query */
                 preparedStatement = connection.prepareStatement("select name from users where id=0");
                 resultSet = preparedStatement.executeQuery();
-                /* POTENTIAL FLAW: Read data from a database query resultset */
-                data = resultSet.getString(1);
+                data = resultSet.getString(1); // Potential flaw
             }
             catch (SQLException exceptSql)
             {
@@ -52,7 +51,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
             }
             finally
             {
-                /* Close database objects */
                 try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
                 try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
                 try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -71,12 +69,46 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data;
+        if (privateFive != 5)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            data = "foo"; // Good hardcoded string
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        String data;
+        if (privateFive == 5)
+        {
+            data = "foo"; // Good hardcoded string
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -91,7 +123,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_07 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method will be implemented later
+        goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
