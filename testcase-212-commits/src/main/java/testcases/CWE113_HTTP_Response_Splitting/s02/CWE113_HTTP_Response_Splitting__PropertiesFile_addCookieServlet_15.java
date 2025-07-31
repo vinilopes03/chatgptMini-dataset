@@ -89,6 +89,64 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_15 
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            data = "foo"; // Use a hardcoded string
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        switch (6)
+        {
+        case 6:
+            data = "foo"; // Use hardcoded value
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -97,7 +155,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_15 
         {
         case 6:
             data = ""; /* Initialize data */
-            /* retrieve the property */
             {
                 Properties properties = new Properties();
                 FileInputStream streamFileInput = null;
@@ -155,7 +212,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_15 
         {
         case 6:
             data = ""; /* Initialize data */
-            /* retrieve the property */
             {
                 Properties properties = new Properties();
                 FileInputStream streamFileInput = null;
@@ -211,5 +267,11 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_15 
         goodG2B2(request, response);
         goodB2G1(request, response);
         goodB2G2(request, response);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
