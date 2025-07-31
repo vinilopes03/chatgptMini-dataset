@@ -45,8 +45,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
                     /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
-                    data = resultSet.getString(1);
+                    data = resultSet.getString(1); // POTENTIAL FLAW
                 }
                 catch (SQLException exceptSql)
                 {
@@ -54,7 +53,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
                 }
                 finally
                 {
-                    /* Close database objects */
                     try
                     {
                         if (resultSet != null) resultSet.close();
@@ -78,7 +76,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -86,7 +83,25 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_13 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good method implementation will go here
+        String data;
+        if (IO.STATIC_FINAL_FIVE!=5)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
