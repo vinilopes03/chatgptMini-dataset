@@ -68,7 +68,25 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_14 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial empty method
+        String data;
+        if (IO.staticFive == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null; // Ensures data is initialized
+        }
+
+        if (IO.staticFive == 5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
