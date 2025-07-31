@@ -129,11 +129,17 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_09 extend
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    /* Other good methods */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for another good function
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
