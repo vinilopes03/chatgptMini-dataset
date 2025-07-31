@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extends AbstractTestCaseServlet
 {
@@ -95,9 +96,32 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
         }
     }
 
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response); // Call the good method
+        goodG2B2(request, response); // Call the second good method
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
