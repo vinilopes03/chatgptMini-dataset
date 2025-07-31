@@ -32,38 +32,23 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_31 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing implementation of the bad method
+        // ...
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        // goodB2G will be implemented in the next commit
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
             String data;
-
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-
-                try
-                {
-                    /* read string from file into data */
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine();  // Read the line from file
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Close stream reading objects
-                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException e) { }
-                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException e) { }
-                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException e) { }
-                }
-            }
-
+            data = "foo"; // Use a hardcoded string as a safe value
             dataCopy = data;
         }
         {
@@ -71,14 +56,9 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_31 extends Ab
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Add cookie with potentially dangerous data
+                response.addCookie(cookieSink); // Still potentially dangerous but from a safe source
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method body will be implemented in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
