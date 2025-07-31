@@ -81,4 +81,29 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31 ext
             }
         }
     }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
 }
