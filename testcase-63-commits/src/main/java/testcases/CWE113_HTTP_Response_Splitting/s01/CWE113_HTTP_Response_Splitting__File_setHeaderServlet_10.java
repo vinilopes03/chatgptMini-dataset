@@ -42,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
                 BufferedReader readerBuffered = null;
                 try
                 {
-                    /* read string from file into data */
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
@@ -118,6 +117,29 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_10 extends Ab
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (IO.staticTrue)
