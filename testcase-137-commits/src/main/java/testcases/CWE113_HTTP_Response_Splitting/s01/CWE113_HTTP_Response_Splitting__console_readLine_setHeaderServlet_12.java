@@ -75,7 +75,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
         if (data != null)
         {
-            response.setHeader("Location", "/author.jsp?lang=" + data);
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Vulnerable line
         }
     }
 
