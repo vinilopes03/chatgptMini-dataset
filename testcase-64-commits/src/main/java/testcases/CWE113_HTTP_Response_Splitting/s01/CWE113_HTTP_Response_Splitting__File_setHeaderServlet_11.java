@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -91,6 +93,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_11 extends Ab
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // Encoding data for safety
                 response.setHeader("Location", "/author.jsp?lang=" + data); // Safe
             }
         }
