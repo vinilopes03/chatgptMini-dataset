@@ -26,5 +26,42 @@ import java.util.logging.Level;
 import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_13 extends AbstractTestCaseServlet {
-    // Empty class body for now
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                } finally {
+                    /* Close stream reading object */
+                    try {
+                        if (streamFileInput != null) {
+                            streamFileInput.close();
+                        }
+                    } catch (IOException exceptIO) {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
+        } else {
+            data = null; // Initialize data to avoid compiler error
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
 }
