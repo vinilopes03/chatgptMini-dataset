@@ -59,4 +59,26 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             response.addCookie(cookieSink);
         }
     }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = ""; /* initialize data in case there are no cookies */
+
+        // Read data from cookies
+        Cookie cookieSources[] = request.getCookies();
+        if (cookieSources != null && cookieSources.length > 0)
+        {
+            /* POTENTIAL FLAW: Read data from the first cookie value */
+            data = cookieSources[0].getValue();
+        }
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            response.addCookie(cookieSink);
+        }
+    }
 }
