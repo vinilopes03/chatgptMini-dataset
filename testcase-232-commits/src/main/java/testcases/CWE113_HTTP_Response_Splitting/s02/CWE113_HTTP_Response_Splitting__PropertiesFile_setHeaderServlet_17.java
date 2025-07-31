@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_17 extends AbstractTestCaseServlet {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -51,10 +52,40 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_17 
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data = "foo"; // FIX: Use a hardcoded string
 
         if (data != null) {
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but controlled input now
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Controlled input
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; /* Initialize data */
+
+        /* retrieve the property */
+        Properties properties = new Properties();
+        FileInputStream streamFileInput = null;
+
+        try {
+            streamFileInput = new FileInputStream("../common/config.properties");
+            properties.load(streamFileInput);
+            data = properties.getProperty("data"); // POTENTIAL FLAW
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        } finally {
+            if (streamFileInput != null) {
+                streamFileInput.close();
+            }
+        }
+
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: URL Encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
         }
     }
 
