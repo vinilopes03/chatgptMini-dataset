@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 extends AbstractTestCaseServlet
 {
@@ -88,7 +89,31 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented in future commits
+        String data;
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+        else
+        {
+            // Additional logic to be implemented in future commits
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
