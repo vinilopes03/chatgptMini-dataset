@@ -95,7 +95,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         }
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
@@ -120,10 +119,35 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
         }
     }
 
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // Dead Code
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be added in later commits
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
