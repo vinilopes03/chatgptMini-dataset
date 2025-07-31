@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 extends AbstractTestCaseServlet
 {
@@ -44,16 +45,15 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_05 ext
         }
         else
         {
-            // FIX: Use a hardcoded string
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
 
         if (privateTrue)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URL Encode
+                response.addCookie(cookieSink); // Good Sink
             }
         }
     }
