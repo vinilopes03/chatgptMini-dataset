@@ -60,6 +60,13 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_12 
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation to be added in future commits
+        String data;
+        // FIX: Use a hardcoded string
+        data = "safeLanguage";
+
+        if (data != null) {
+            // Safe use of hardcoded string
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 }
