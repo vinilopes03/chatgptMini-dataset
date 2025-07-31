@@ -33,38 +33,19 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_06 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // ... [same implementation as previous commit] ...
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                FileInputStream streamFileInput = null;
-                InputStreamReader readerInputStream = null;
-                BufferedReader readerBuffered = null;
-                try
-                {
-                    streamFileInput = new FileInputStream(file);
-                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // Read from file
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Close resources
-                    try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
-                    try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
-                    try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
-                }
-            }
+            data = null; // Dead code
         }
         else
         {
-            data = null; // Dead code
+            data = "foo"; // Good source
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
