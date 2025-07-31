@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet_05 extends AbstractTestCaseServlet
 {
     private boolean privateTrue = true;
@@ -27,7 +29,28 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in future commits
+        String data;
+        if (privateTrue)
+        {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null)
+            {
+                data = cookieSources[0].getValue(); // Read data from the first cookie
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateTrue)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
