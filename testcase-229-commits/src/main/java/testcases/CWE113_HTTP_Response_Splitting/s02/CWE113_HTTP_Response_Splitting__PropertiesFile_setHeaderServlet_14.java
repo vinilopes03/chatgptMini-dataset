@@ -50,13 +50,44 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
         if (IO.staticFive!=5) {
             data = null; // Dead code, but initialized for compiler
         } else {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
 
         if (IO.staticFive==5) {
             if (data != null) {
                 /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFive==5) {
+            data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data"); // Read data
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                if (streamFileInput != null) {
+                    streamFileInput.close();
+                }
+            }
+        } else {
+            data = null; // Make sure data is initialized
+        }
+
+        if (IO.staticFive!=5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
