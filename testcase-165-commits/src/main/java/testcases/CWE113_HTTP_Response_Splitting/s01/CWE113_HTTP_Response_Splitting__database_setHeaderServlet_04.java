@@ -71,13 +71,16 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_04 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // Using a hardcoded string
+        // Using hardcoded string for good case
+        String data = "foo"; 
         if (data != null)
         {
             // FIX: Use URLEncoder to encode the data
             data = URLEncoder.encode(data, "UTF-8");
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
+
+        // Additional good cases can be added here if needed
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
