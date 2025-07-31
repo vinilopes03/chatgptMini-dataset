@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
 
 import java.util.logging.Level;
 
@@ -84,6 +85,46 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_10 ext
         {
             if (data != null)
             {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = ""; /* Initialize data */
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine();  // Read data from socket
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                // Cleanup code omitted for brevity
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                data = URLEncoder.encode(data, "UTF-8");  // Encode the data
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
