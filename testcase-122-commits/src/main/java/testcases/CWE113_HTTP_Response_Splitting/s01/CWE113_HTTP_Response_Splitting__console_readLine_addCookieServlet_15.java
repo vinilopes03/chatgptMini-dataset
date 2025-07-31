@@ -38,19 +38,21 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        switch (5)
+        switch (6)
         {
         case 6:
-            data = null;
-            break;
-        default:
             /* FIX: Use a hardcoded string */
             data = "foo";
+            break;
+        default:
+            data = null;
             break;
         }
 
@@ -66,6 +68,47 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
             break;
         default:
             IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        switch (6)
+        {
+        case 6:
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                try
+                {
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+            break;
+        default:
+            data = null;
+            break;
+        }
+
+        switch (7)
+        {
+        case 8:
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
             break;
         }
     }
