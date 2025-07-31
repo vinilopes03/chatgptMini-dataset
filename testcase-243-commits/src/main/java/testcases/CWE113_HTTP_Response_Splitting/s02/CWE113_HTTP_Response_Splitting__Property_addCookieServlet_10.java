@@ -48,6 +48,36 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFalse)
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo"; 
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.staticTrue)
         {
@@ -62,8 +92,55 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_10 extend
         {
             if (data != null)
             {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticFalse)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
                 Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticTrue)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (IO.staticTrue)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
