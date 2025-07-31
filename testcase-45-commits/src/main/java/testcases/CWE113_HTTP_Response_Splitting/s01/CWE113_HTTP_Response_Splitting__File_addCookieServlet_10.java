@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_10 extends AbstractTestCaseServlet
 {
@@ -91,8 +92,8 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_10 extends Ab
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX
+                response.addCookie(cookieSink); 
             }
         }
     }
