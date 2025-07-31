@@ -68,7 +68,20 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_31 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial commit with empty method
+        String dataCopy;
+        {
+            String data;
+            data = "foo"; // FIX: Use a hardcoded string
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
