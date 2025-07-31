@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_05 extends AbstractTestCaseServlet
 {
@@ -88,8 +89,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_05 extends Ab
         String data;
         if (privateTrue)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
         else
         {
@@ -100,6 +100,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_05 extends Ab
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // URL Encoding
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
