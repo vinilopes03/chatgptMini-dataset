@@ -34,12 +34,10 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
         {
             InputStreamReader readerInputStream = null;
             BufferedReader readerBuffered = null;
-            /* read user input from console with readLine */
             try
             {
                 readerInputStream = new InputStreamReader(System.in, "UTF-8");
                 readerBuffered = new BufferedReader(readerInputStream);
-                /* POTENTIAL FLAW: Read data from the console using readLine */
                 data = readerBuffered.readLine();
             }
             catch (IOException exceptIO)
@@ -76,7 +74,18 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
         if (data != null)
         {
-            /* POTENTIAL FLAW: Input not verified before inclusion in header */
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+        
+        if (data != null)
+        {
             response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
