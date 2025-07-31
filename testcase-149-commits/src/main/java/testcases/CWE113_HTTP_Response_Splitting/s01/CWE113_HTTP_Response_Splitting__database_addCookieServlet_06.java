@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -33,11 +34,43 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implemented in previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a flaw
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
@@ -47,7 +80,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
                     connection = IO.getDBConnection();
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    data = resultSet.getString(1); // POTENTIAL FLAW
+                    data = resultSet.getString(1); // FLAW
                 }
                 catch (SQLException exceptSql)
                 {
@@ -61,22 +94,17 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_06 extend
         }
         else
         {
-            data = null; // Dead code, but ensures data is initialized
+            data = null; // Dead code
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good encoding
+                response.addCookie(cookieSink); // Safe now
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Placeholder for future implementation
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
