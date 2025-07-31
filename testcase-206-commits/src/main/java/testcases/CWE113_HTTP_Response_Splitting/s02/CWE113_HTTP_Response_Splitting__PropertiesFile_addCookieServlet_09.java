@@ -84,7 +84,25 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_09 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        // Method implementation to follow...
+        if (IO.STATIC_FINAL_FALSE)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
