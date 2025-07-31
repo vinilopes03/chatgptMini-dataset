@@ -33,18 +33,14 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_11 extend
         if (IO.staticReturnsTrue())
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             Connection connection = null;
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
             try
             {
-                /* setup the connection */
                 connection = IO.getDBConnection();
-                /* prepare and execute a (hardcoded) query */
                 preparedStatement = connection.prepareStatement("select name from users where id=0");
                 resultSet = preparedStatement.executeQuery();
-                /* POTENTIAL FLAW: Read data from a database query resultset */
                 data = resultSet.getString(1);
             }
             catch (SQLException exceptSql)
@@ -53,7 +49,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_11 extend
             }
             finally
             {
-                /* Close database objects */
                 try { if (resultSet != null) resultSet.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
                 try { if (preparedStatement != null) preparedStatement.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
                 try { if (connection != null) connection.close(); } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
@@ -61,14 +56,13 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_11 extend
         }
         else
         {
-            data = null; // Dead code, but required for compilation
+            data = null;
         }
 
         if(IO.staticReturnsTrue())
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -76,6 +70,13 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_11 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added later
+        String data = "foo"; /* FIX: Use a hardcoded string */
+        if (IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
