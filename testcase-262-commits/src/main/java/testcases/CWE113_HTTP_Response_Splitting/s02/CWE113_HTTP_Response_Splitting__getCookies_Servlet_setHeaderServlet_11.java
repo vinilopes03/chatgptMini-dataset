@@ -84,9 +84,32 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
         }
     }
 
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticReturnsTrue()) {
+            data = ""; /* initialize data in case there are no cookies */
+            Cookie cookieSources[] = request.getCookies();
+            if (cookieSources != null) {
+                /* POTENTIAL FLAW: Read data from the first cookie value */
+                data = cookieSources[0].getValue();
+            }
+        } else {
+            data = null;
+        }
+
+        if (IO.staticReturnsTrue()) {
+            if (data != null) {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         goodG2B1(request, response);
         goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
