@@ -43,6 +43,8 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_15 ext
         case 7:
             if (data != null)
             {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
             break;
