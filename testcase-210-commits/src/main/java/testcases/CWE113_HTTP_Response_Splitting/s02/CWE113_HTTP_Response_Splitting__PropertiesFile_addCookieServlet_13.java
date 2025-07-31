@@ -42,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_13 
                 } catch (IOException exceptIO) {
                     IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
                 } finally {
-                    /* Close stream reading object */
                     try {
                         if (streamFileInput != null) {
                             streamFileInput.close();
@@ -101,5 +100,96 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_13 
                 response.addCookie(cookieSink);
             }
         }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                /* POTENTIAL FLAW: Read data from a .properties file */
+                data = properties.getProperty("data");
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        } else {
+            data = null; // Initialize data to avoid compiler error
+        }
+
+        if (IO.STATIC_FINAL_FIVE != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                /* POTENTIAL FLAW: Read data from a .properties file */
+                data = properties.getProperty("data");
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            } finally {
+                try {
+                    if (streamFileInput != null) {
+                        streamFileInput.close();
+                    }
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        } else {
+            data = null; // Initialize data to avoid compiler error
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException {
+        mainFromParent(args);
     }
 }
