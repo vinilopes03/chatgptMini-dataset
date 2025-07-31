@@ -29,50 +29,22 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_01 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = ""; // Initialize data
+        // Implementation from previous commit
+    }
 
-        // Retrieve the property
-        Properties properties = new Properties();
-        FileInputStream streamFileInput = null;
-
-        try
-        {
-            streamFileInput = new FileInputStream("../common/config.properties");
-            properties.load(streamFileInput);
-            // POTENTIAL FLAW: Read data from a .properties file
-            data = properties.getProperty("data");
-        }
-        catch (IOException exceptIO)
-        {
-            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-        }
-        finally
-        {
-            // Close stream reading object
-            try
-            {
-                if (streamFileInput != null)
-                {
-                    streamFileInput.close();
-                }
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-            }
-        }
-
-        // Logic to add cookie (not secure)
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+    }
+    
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // FIX: Use a hardcoded string
         if (data != null)
         {
             Cookie cookieSink = new Cookie("lang", data);
             response.addCookie(cookieSink);
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to be implemented
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
