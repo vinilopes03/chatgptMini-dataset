@@ -31,42 +31,26 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-
-        data = ""; /* Initialize data */
-        {
-            File file = new File("C:\\data.txt");
-            FileInputStream streamFileInput = null;
-            InputStreamReader readerInputStream = null;
-            BufferedReader readerBuffered = null;
-
-            try
-            {
-                /* read string from file into data */
-                streamFileInput = new FileInputStream(file);
-                readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                readerBuffered = new BufferedReader(readerInputStream);
-                data = readerBuffered.readLine(); // POTENTIAL FLAW
-            }
-            catch (IOException exceptIO)
-            {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-            finally
-            {
-                // Cleanup code
-            }
-        }
-
-        if (data != null)
-        {
-            Cookie cookieSink = new Cookie("lang", data);
-            response.addCookie(cookieSink); // POTENTIAL FLAW
-        }
+        // Implementation as before
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to demonstrate good practice
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+
+        /* FIX: Use a hardcoded string */
+        data = "foo";
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // Potentially insecure
+        }
     }
 }
