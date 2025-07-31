@@ -23,38 +23,78 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_11 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation as in previous commit
+        // Implementation as in previous commits
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.staticReturnsTrue() to IO.staticReturnsFalse() */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as in previous commit
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second IO.staticReturnsTrue() to IO.staticReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticReturnsFalse())
+        if (IO.staticReturnsTrue())
         {
-            data = null;
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
-        if (IO.staticReturnsTrue())
+        if (IO.staticReturnsFalse())
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
