@@ -39,7 +39,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_1
 
         for (int j = 0; j < 1; j++) {
             if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Fixed vulnerability
                 response.addCookie(cookieSink);
             }
         }
