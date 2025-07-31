@@ -29,16 +29,25 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (5==5)
         {
-            data = ""; /* Initialize data */
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
-                /* POTENTIAL FLAW: Read data from the console using readLine */
-                data = reader.readLine();
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (5==5)
@@ -49,10 +58,5 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will go here
     }
 }
