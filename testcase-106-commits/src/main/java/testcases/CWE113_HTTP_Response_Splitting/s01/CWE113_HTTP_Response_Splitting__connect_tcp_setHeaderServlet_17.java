@@ -24,6 +24,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import java.util.logging.Level;
 
@@ -73,6 +75,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_17 ext
         if (data != null)
         {
             response.setHeader("Location", "/author.jsp?lang=" + data); // No flaw
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = ""; /* Initialize data */
+
+        /* Read data using an outbound tcp connection */
+        {
+            Socket socket = null;
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+
+            try
+            {
+                socket = new Socket("host.example.org", 39544);
+                readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                data = readerBuffered.readLine(); // Read input from socket
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) {}
+                try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) {}
+                try { if (socket != null) socket.close(); } catch (IOException exceptIO) {}
+            }
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, StandardCharsets.UTF_8.toString()); // URL encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Use encoded data
         }
     }
 
