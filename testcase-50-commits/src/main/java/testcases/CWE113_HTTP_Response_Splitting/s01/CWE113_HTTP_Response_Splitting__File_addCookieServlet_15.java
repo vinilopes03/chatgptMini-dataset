@@ -48,7 +48,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_15 extends Ab
                 BufferedReader readerBuffered = null;
                 try
                 {
-                    /* Read string from file into data */
                     streamFileInput = new FileInputStream(file);
                     readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
@@ -60,7 +59,6 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_15 extends Ab
                 }
                 finally
                 {
-                    /* Close stream reading objects */
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                     try { if (streamFileInput != null) streamFileInput.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO); }
@@ -89,7 +87,31 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_15 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good implementation
+        String data;
+
+        switch (5)
+        {
+        case 6:
+            data = null;
+            break;
+        default:
+            data = "foo"; // Hardcoded good input
+            break;
+        }
+
+        switch (7)
+        {
+        case 7:
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
