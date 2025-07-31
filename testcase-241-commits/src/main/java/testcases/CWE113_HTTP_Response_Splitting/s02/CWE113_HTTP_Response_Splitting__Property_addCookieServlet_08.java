@@ -39,7 +39,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
         String data;
         if (privateReturnsTrue())
         {
-            /* get system property user.home */
             data = System.getProperty("user.home");
         }
         else
@@ -57,8 +56,30 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_08 extend
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (privateReturnsFalse())
+        {
+            data = null;
+        }
+        else
+        {
+            data = "foo";  // Hardcoded string
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in later commits
+        goodG2B1(request, response);
     }
 }
