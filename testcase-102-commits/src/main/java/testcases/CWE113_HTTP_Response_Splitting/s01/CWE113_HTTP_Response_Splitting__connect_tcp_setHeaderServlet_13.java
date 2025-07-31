@@ -32,10 +32,9 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.STATIC_FINAL_FIVE == 5) // Control flow
+        if (IO.STATIC_FINAL_FIVE == 5)
         {
             data = ""; // Initialize data
-            // Read data using an outbound tcp connection
             try (Socket socket = new Socket("host.example.org", 39544);
                  BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
                 data = readerBuffered.readLine(); // Potential flaw
@@ -46,7 +45,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
             data = null; // Initialize for else path
         }
 
-        if (IO.STATIC_FINAL_FIVE == 5) // Control flow
+        if (IO.STATIC_FINAL_FIVE == 5)
         {
             if (data != null) {
                 response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
@@ -56,7 +55,18 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial empty method
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = "foo"; // Good source (hardcoded string)
+        } else {
+            data = null; // Initialize for else path
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but controlled input
+            }
+        }
     }
     
     public static void main(String[] args) throws ClassNotFoundException,
