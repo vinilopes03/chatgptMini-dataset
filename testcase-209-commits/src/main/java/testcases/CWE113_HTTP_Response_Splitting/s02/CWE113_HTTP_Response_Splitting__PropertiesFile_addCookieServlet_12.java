@@ -83,7 +83,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
         }
         else
         {
-            // Additional logic to be implemented in future commits
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
         }
     }
 
@@ -112,7 +117,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
         }
         else
         {
-            // Additional logic to be implemented in future commits
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                response.addCookie(cookieSink);
+            }
         }
     }
 
