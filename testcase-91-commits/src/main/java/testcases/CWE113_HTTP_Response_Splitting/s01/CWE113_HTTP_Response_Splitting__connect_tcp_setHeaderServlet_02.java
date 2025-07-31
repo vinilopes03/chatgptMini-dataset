@@ -32,10 +32,9 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (true) // Always executes
+        if (true)
         {
             data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
             {
                 Socket socket = null;
                 BufferedReader readerBuffered = null;
@@ -45,7 +44,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
                     socket = new Socket("host.example.org", 39544);
                     readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
                     data = readerBuffered.readLine();
                 }
                 catch (IOException exceptIO)
@@ -54,7 +52,6 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
                 }
                 finally
                 {
-                    /* Clean up stream reading objects */
                     try { if (readerBuffered != null) readerBuffered.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO); }
                     try { if (readerInputStream != null) readerInputStream.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO); }
                     try { if (socket != null) socket.close(); } catch (IOException exceptIO) { IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO); }
@@ -66,7 +63,28 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
         {
             if (data != null)
             {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (false)
+        {
+            data = null; // Dead code
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -74,7 +92,8 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_02 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Good methods will be implemented in the next commits
+        goodG2B1(request, response);
+        // Other good methods will be implemented in the next commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
