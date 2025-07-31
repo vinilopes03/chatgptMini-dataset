@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 extends AbstractTestCaseServlet
 {
@@ -97,7 +98,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
         String data;
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
         }
         else
@@ -115,10 +115,56 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                if (streamFileInput != null)
+                {
+                    streamFileInput.close();
+                }
+            }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
