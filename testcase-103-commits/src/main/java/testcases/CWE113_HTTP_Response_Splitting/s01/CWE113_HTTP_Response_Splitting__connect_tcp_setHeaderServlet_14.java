@@ -33,70 +33,43 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_14 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // ... (bad method implementation)
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first IO.staticFive==5 to IO.staticFive!=5 */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive!=5)
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure data is initialized before the Sink to avoid compiler errors */
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.staticFive==5)
         {
-            data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
-            {
-                Socket socket = null;
-                BufferedReader readerBuffered = null;
-                InputStreamReader readerInputStream = null;
-                try
-                {
-                    /* Read data using an outbound tcp connection */
-                    socket = new Socket("host.example.org", 39544);
-                    /* read input from socket */
-                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    /* POTENTIAL FLAW: Read data using an outbound tcp connection */
-                    data = readerBuffered.readLine();
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* clean up stream reading objects */
-                    try
-                    {
-                        if (readerBuffered != null)
-                        {
-                            readerBuffered.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
-                    }
-
-                    try
-                    {
-                        if (readerInputStream != null)
-                        {
-                            readerInputStream.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
-                    }
-
-                    /* clean up socket objects */
-                    try
-                    {
-                        if (socket != null)
-                        {
-                            socket.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing Socket", exceptIO);
-                    }
-                }
-            }
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
         else
         {
