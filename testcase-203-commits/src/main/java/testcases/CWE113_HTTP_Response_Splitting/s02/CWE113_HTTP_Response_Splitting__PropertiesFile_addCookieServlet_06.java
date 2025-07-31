@@ -50,7 +50,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
             }
             finally
             {
-                /* Close stream reading object */
                 try
                 {
                     if (streamFileInput != null)
@@ -74,7 +73,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
-                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
                 response.addCookie(cookieSink);
             }
         }
@@ -82,6 +80,24 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in future commits
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 }
