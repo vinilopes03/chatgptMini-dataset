@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_31 extends AbstractTestCaseServlet
 {
@@ -68,6 +69,12 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_31 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
             String data;
@@ -80,6 +87,45 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_31 extend
             {
                 Cookie cookieSink = new Cookie("lang", data);
                 response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1); // POTENTIAL FLAW
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    // Close database objects
+                }
+            }
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX
+                response.addCookie(cookieSink); // FIX: use URLEncoder.encode
             }
         }
     }
