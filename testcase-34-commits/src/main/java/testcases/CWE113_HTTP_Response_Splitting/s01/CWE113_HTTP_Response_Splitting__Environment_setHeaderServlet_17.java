@@ -47,11 +47,11 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = System.getenv("ADD"); // Read data from an environment variable
+        String data = System.getenv("ADD");
 
         if (data != null)
         {
-            data = URLEncoder.encode(data, "UTF-8"); // Safely encode the data
+            data = URLEncoder.encode(data, "UTF-8"); // Properly encode the data
             response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
         }
     }
