@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_08 extends AbstractTestCaseServlet
 {
@@ -97,8 +98,8 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_08 
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Still a Bad Sink, but safe here
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good Sink using URLEncoder
+                response.addCookie(cookieSink);
             }
         }
     }
