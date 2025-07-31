@@ -20,6 +20,8 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 extends AbstractTestCaseServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -43,9 +45,21 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_17 ext
         }
     }
 
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = System.getenv("ADD"); // Read data from an environment variable
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Safely encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
