@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import java.net.URLEncoder;
+
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends AbstractTestCaseServlet
 {
     private int privateFive = 5;
@@ -76,7 +78,24 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_07 extends Ab
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Future implementation
+        String data;
+        if (privateFive == 5)
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a potential flaw but from hardcoded data
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
