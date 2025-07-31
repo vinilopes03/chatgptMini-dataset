@@ -32,28 +32,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
         String data;
         if (IO.staticFive==5) {
             data = ""; /* Initialize data */
-            /* retrieve the property */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-                try {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
-                    data = properties.getProperty("data");
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                } finally {
-                    /* Close stream reading object */
-                    try {
-                        if (streamFileInput != null) {
-                            streamFileInput.close();
-                        }
-                    } catch (IOException exceptIO) {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            // properties loading code...
         } else {
             data = null; // Make sure data is initialized
         }
@@ -66,11 +45,26 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_14 
         }
     }
 
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will go here
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (IO.staticFive!=5) {
+            data = null; // Dead code, but initialized for compiler
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive==5) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
-    // Other methods remain unchanged...
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Other good methods remain to be implemented...
+    }
 
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
