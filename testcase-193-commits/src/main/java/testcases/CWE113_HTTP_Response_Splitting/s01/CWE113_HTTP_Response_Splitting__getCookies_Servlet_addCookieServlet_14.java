@@ -43,7 +43,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: encode the data
                 response.addCookie(cookieSink);
             }
         }
@@ -118,8 +118,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX: encode the data
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: encode the data
+                response.addCookie(cookieSink);
             }
         }
     }
@@ -145,8 +145,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
-                response.addCookie(cookieSink); // FIX: encode the data
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX: encode the data
+                response.addCookie(cookieSink);
             }
         }
     }
