@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_09 extends AbstractTestCaseServlet
 {
@@ -68,8 +69,21 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_09 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data = "foo"; // FIX: Use a hardcoded string
-        response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
+        String data;
+        if (IO.STATIC_FINAL_TRUE)
+        {
+            data = "foo"; // Use a hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // FIX: Properly encode the data
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
