@@ -35,7 +35,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
         if (true)
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
             {
                 Properties properties = new Properties();
                 FileInputStream streamFileInput = null;
@@ -43,7 +42,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
                 {
                     streamFileInput = new FileInputStream("../common/config.properties");
                     properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
                     data = properties.getProperty("data");
                 }
                 catch (IOException exceptIO)
@@ -91,8 +89,30 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
         }
         else
         {
-            /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+
+        if (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (true)
+        {
+            data = "foo"; // Fixed hardcoded string
+        }
+        else
+        {
+            data = null;
         }
 
         if (true)
@@ -108,7 +128,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_02 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
-        // Other good methods will be added later
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
