@@ -11,7 +11,7 @@ Template File: sources-sinks-04.tmpl.java
 * Sinks: setHeaderServlet
 *    GoodSink: URLEncode input
 *    BadSink : querystring to setHeader()
-* Flow Variant: 04 Control flow: if(PRIVATE_STATIC_FINAL_TRUE) and if(PRIVATE_STATIC_FINAL_FALSE)
+* Flow Variant: 04 Control flow: if(PRIVATE_STATIC_STATIC_TRUE) and if(PRIVATE_STATIC_FINAL_FALSE)
 *
 * */
 
