@@ -46,7 +46,20 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method implementation will be added in later commits
+        String data;
+        if (IO.staticFive == 5) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            data = null; // Dead code
+        }
+
+        if (IO.staticFive == 5) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
     
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
