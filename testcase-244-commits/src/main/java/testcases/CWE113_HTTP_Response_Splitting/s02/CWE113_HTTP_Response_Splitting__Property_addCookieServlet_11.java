@@ -26,7 +26,27 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_11 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Bad method implementation will be added later
+        String data;
+        if (IO.staticReturnsTrue())
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null; // This code will not run
+        }
+
+        if(IO.staticReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -34,11 +54,6 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_11 extend
         // Good method implementation will be added later
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
