@@ -26,13 +26,30 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        String data;
+        if (IO.staticFive==5)
+        {
+            /* get environment variable ADD */
+            /* POTENTIAL FLAW: Read data from an environment variable */
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Dead code, but for initialization
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Method to be implemented
     }
-
-    // Additional good methods to be implemented later
 }
