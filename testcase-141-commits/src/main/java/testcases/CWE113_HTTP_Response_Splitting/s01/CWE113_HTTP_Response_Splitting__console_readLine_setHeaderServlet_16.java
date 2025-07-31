@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_16 extends AbstractTestCaseServlet
 {
@@ -59,7 +60,22 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
     /* goodB2G() - use badsource and goodsink */
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for goodB2G implementation
+        String data = ""; /* Initialize data */
+
+        /* read user input from console with readLine */
+        try (InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+             BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
+            /* POTENTIAL FLAW: Read data from the console using readLine */
+            data = readerBuffered.readLine();
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        if (data != null) {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
