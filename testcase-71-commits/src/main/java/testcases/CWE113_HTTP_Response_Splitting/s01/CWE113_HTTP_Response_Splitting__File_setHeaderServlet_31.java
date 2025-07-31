@@ -41,29 +41,69 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_31 extends Ab
         goodB2G(request, response);
     }
 
-    /* goodG2B() - use goodsource and badsink */
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        // Implementation as in Commit 3
+    }
+
+    /* goodB2G() - use badsource and goodsink */
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String dataCopy;
         {
             String data;
-            /* FIX: Use a hardcoded string */
-            data = "foo";
 
+            data = ""; /* Initialize data */
+            {
+                File file = new File("C:\\data.txt");
+                FileInputStream streamFileInput = null;
+                InputStreamReader readerInputStream = null;
+                BufferedReader readerBuffered = null;
+
+                try {
+                    /* read string from file into data */
+                    streamFileInput = new FileInputStream(file);
+                    readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+                    readerBuffered = new BufferedReader(readerInputStream);
+
+                    /* POTENTIAL FLAW: Read data from a file */
+                    data = readerBuffered.readLine();
+                } catch (IOException exceptIO) {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                } finally {
+                    /* Close stream reading objects */
+                    if (readerBuffered != null) {
+                        try {
+                            readerBuffered.close();
+                        } catch (IOException exceptIO) {
+                            IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                        }
+                    }
+                    if (readerInputStream != null) {
+                        try {
+                            readerInputStream.close();
+                        } catch (IOException exceptIO) {
+                            IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                        }
+                    }
+                    if (streamFileInput != null) {
+                        try {
+                            streamFileInput.close();
+                        } catch (IOException exceptIO) {
+                            IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                        }
+                    }
+                }
+            }
             dataCopy = data;
         }
         {
             String data = dataCopy;
 
             if (data != null) {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    /* goodB2G() - use badsource and goodsink */
-    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Implementation to be added
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
