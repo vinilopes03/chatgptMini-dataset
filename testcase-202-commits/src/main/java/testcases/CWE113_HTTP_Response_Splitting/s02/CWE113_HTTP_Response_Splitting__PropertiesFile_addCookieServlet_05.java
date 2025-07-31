@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_05 extends AbstractTestCaseServlet
 {
@@ -35,38 +36,110 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_05 
         // Existing implementation
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first privateTrue to privateFalse */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing implementation
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Existing implementation
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second privateTrue to privateFalse */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateFalse)
+        if (privateTrue)
         {
-            data = null;
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
-        if (privateTrue)
+        if (privateFalse)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
     }
 
-    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateTrue)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = ""; /* Initialize data */
+            /* retrieve the property */
+            {
+                Properties properties = new Properties();
+                FileInputStream streamFileInput = null;
+                try
+                {
+                    streamFileInput = new FileInputStream("../common/config.properties");
+                    properties.load(streamFileInput);
+                    /* POTENTIAL FLAW: Read data from a .properties file */
+                    data = properties.getProperty("data");
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (streamFileInput != null)
+                        {
+                            streamFileInput.close();
+                        }
+                    }
+                    catch (IOException exceptIO)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                    }
+                }
+            }
         }
         else
         {
@@ -77,7 +150,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_05 
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
                 response.addCookie(cookieSink);
             }
         }
@@ -87,6 +160,8 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_05 
     {
         goodG2B1(request, response);
         goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
