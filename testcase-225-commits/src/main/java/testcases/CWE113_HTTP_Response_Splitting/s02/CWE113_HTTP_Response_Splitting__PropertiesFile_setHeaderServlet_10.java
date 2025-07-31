@@ -48,6 +48,14 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_10 
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        // Method to implement good case
+        String data;
+        if (IO.staticTrue) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
