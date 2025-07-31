@@ -72,15 +72,53 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_02 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         data = "foo"; // Good source: hardcoded string
         if (true)
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink: URL encode
-                response.addCookie(cookieSink);
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw: unverified input
             }
         }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = "foo"; // Good source: hardcoded string
+        if (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw: unverified input
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implement goodB2G1 method
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implement goodB2G2 method
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
