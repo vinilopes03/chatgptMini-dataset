@@ -41,26 +41,25 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateReturnsTrue())
+        if (privateReturnsFalse())
         {
-            data = ""; /* Initialize data */
-            {
-                File file = new File("C:\\data.txt");
-                try (FileInputStream streamFileInput = new FileInputStream(file);
-                     InputStreamReader readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
-                     BufferedReader readerBuffered = new BufferedReader(readerInputStream)) {
-                    
-                    /* POTENTIAL FLAW: Read data from a file */
-                    data = readerBuffered.readLine();
-                } catch (IOException exceptIO) {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-            }
+            data = null; // This block will not run
         }
         else
         {
-            data = null;
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
 
         if (privateReturnsTrue())
@@ -71,11 +70,6 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_08 extends Ab
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
