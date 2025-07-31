@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -34,14 +35,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
             Properties properties = new Properties();
             FileInputStream streamFileInput = null;
             try
             {
                 streamFileInput = new FileInputStream("../common/config.properties");
                 properties.load(streamFileInput);
-                /* POTENTIAL FLAW: Read data from a .properties file */
                 data = properties.getProperty("data");
             }
             catch (IOException exceptIO)
@@ -83,7 +82,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
-            /* FIX: Use a hardcoded string */
             data = "foo"; // Good source
         }
         else
@@ -95,7 +93,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_06 
         {
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // Good sink
                 response.addCookie(cookieSink);
             }
         }
