@@ -42,15 +42,21 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_04 ext
     /* goodG2B1() - use goodsource and badsink by changing first PRIVATE_STATIC_FINAL_TRUE to PRIVATE_STATIC_FINAL_FALSE */
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // [goodG2B1 method implementation as before]
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (PRIVATE_STATIC_FINAL_FALSE)
-        {
-            data = null;
-        }
-        else
+        if (PRIVATE_STATIC_FINAL_TRUE)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
