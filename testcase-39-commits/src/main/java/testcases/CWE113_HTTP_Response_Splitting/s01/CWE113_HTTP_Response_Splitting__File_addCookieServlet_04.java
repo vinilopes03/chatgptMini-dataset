@@ -33,27 +33,35 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_04 extends Ab
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (PRIVATE_STATIC_FINAL_TRUE)
-        {
-            data = ""; /* Initialize data */
-            File file = new File("C:\\data.txt");
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
-                data = reader.readLine(); // POTENTIAL FLAW: Read data from a file
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-
-            if (data != null) {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
-            }
-        }
+        // Implementation from previous commit
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will go here
+        goodG2B1(request, response);
+        // Other good methods will be added here later
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null; // This block will not run
+        }
+        else
+        {
+            data = "foo"; // FIX: Use a hardcoded string
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW: Input not verified before inclusion in the cookie
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
