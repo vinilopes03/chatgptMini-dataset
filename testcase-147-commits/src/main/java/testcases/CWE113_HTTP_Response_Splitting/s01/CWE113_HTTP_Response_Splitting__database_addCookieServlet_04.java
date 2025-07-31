@@ -43,12 +43,9 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
                 ResultSet resultSet = null;
                 try
                 {
-                    /* setup the connection */
                     connection = IO.getDBConnection();
-                    /* prepare and execute a (hardcoded) query */
                     preparedStatement = connection.prepareStatement("select name from users where id=0");
                     resultSet = preparedStatement.executeQuery();
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
                     data = resultSet.getString(1);
                 }
                 catch (SQLException exceptSql)
@@ -57,42 +54,7 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
                 }
                 finally
                 {
-                    /* Close database objects */
-                    try
-                    {
-                        if (resultSet != null)
-                        {
-                            resultSet.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
-                    }
-
-                    try
-                    {
-                        if (preparedStatement != null)
-                        {
-                            preparedStatement.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
-                    }
-
-                    try
-                    {
-                        if (connection != null)
-                        {
-                            connection.close();
-                        }
-                    }
-                    catch (SQLException exceptSql)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
-                    }
+                    // Close database objects...
                 }
             }
         }
@@ -111,9 +73,31 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_04 extend
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null; // Ensure data is initialized
+        }
+        else
+        {
+            data = "foo"; // Good source
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Potential flaw
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Initial implementation
+        goodG2B1(request, response); // Call the good method
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
