@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_16 extends AbstractTestCaseServlet
 {
@@ -62,7 +63,23 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_16 ext
     /* goodB2G() - use badsource and goodsink */
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for goodB2G implementation
+        String data;
+        data = ""; /* Initialize data */
+
+        // Read data using an outbound tcp connection
+        try (Socket socket = new Socket("host.example.org", 39544);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
+            /* POTENTIAL FLAW: Read data using an outbound tcp connection */
+            data = reader.readLine();
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+
+        if (data != null) {
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
