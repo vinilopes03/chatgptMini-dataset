@@ -113,6 +113,30 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_14 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive!=5)
+        {
+            data = null; // Ensure data is initialized
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (IO.staticFive==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+        }
     }
 }
