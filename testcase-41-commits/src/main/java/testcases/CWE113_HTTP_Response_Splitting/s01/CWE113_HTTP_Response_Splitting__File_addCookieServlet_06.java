@@ -1,0 +1,31 @@
+/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE113_HTTP_Response_Splitting__File_addCookieServlet_06.java
+Label Definition File: CWE113_HTTP_Response_Splitting.label.xml
+Template File: sources-sinks-06.tmpl.java
+*/
+/*
+* @description
+* CWE: 113 HTTP Response Splitting
+* BadSource: File Read data from file (named c:\data.txt)
+* GoodSource: A hardcoded string
+* Sinks: addCookieServlet
+*    GoodSink: URLEncode input
+*    BadSink : querystring to addCookie()
+* Flow Variant: 06 Control flow: if(PRIVATE_STATIC_FINAL_FIVE==5) and if(PRIVATE_STATIC_FINAL_FIVE!=5)
+*
+* */
+
+package testcases.CWE113_HTTP_Response_Splitting.s01;
+import testcasesupport.*;
+
+import javax.servlet.http.*;
+
+public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_06 extends AbstractTestCaseServlet
+{
+    /* The variable below is declared "final", so a tool should be able
+     * to identify that reads of this will always give its initialized
+     * value. */
+    private static final int PRIVATE_STATIC_FINAL_FIVE = 5;
+
+    // Placeholder for methods
+}
