@@ -38,6 +38,14 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE == 5)
         {
@@ -50,9 +58,109 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_06 extend
 
         if (data != null)
         {
-            // FIX: URL encode the data before including it in the header
-            data = URLEncoder.encode(data, "UTF-8");
-            response.setHeader("Location", "/author.jsp?lang=" + data); // Good sink
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // Good source
+        }
+        else
+        {
+            data = null; // to avoid compiler errors
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    try { if (resultSet != null) { resultSet.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                    try { if (preparedStatement != null) { preparedStatement.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                    try { if (connection != null) { connection.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+                }
+            }
+        }
+        else
+        {
+            data = null; // to avoid compiler errors
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Good sink
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = ""; /* Initialize data */
+            /* Read data from a database */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    try { if (resultSet != null) { resultSet.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
+                    try { if (preparedStatement != null) { preparedStatement.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
+                    try { if (connection != null) { connection.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
+                }
+            }
+        }
+        else
+        {
+            data = null; // to avoid compiler errors
+        }
+
+        if (data != null)
+        {
+            data = URLEncoder.encode(data, "UTF-8"); // Good sink
+            response.setHeader("Location", "/author.jsp?lang=" + data);
         }
     }
 
