@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s02;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_06 extends AbstractTestCaseServlet
 {
@@ -51,12 +52,11 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_06 extend
         String data;
         if (PRIVATE_STATIC_FINAL_FIVE==5)
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
         }
         else
         {
-            data = null; // This code will never execute
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_FIVE==5)
@@ -64,6 +64,29 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_06 extend
             if (data != null)
             {
                 Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            data = System.getProperty("user.home");
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE==5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
         }
