@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 extends AbstractTestCaseServlet
 {
@@ -66,7 +67,47 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_06 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Placeholder for good method implementation
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE != 5)
+        {
+            // This block will never run
+            data = null;
+        }
+        else
+        {
+            data = "foo"; // Hardcoded string
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5)
+        {
+            data = "foo"; // Hardcoded string
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (data != null)
+        {
+            response.setHeader("Location", "/author.jsp?lang=" + data); // Bad Sink
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
