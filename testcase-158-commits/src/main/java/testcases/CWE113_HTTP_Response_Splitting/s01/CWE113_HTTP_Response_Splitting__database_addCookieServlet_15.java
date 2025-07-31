@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extends AbstractTestCaseServlet
 {
@@ -99,8 +100,8 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_15 extend
         case 7:
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
-                response.addCookie(cookieSink); // Potential flaw
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // URLEncoded
+                response.addCookie(cookieSink); // Safe inclusion
             }
             break;
         default:
