@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extends AbstractTestCaseServlet
 {
@@ -36,7 +37,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
         if (privateTrue)
         {
             data = ""; /* Initialize data */
-            /* Read data from a database */
             {
                 Connection connection = null;
                 PreparedStatement preparedStatement = null;
@@ -81,23 +81,53 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
         }
     }
 
-    public void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    public void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (privateFalse)
+        if (privateTrue)
         {
-            data = null;
+            data = ""; /* Initialize data */
+            {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = IO.getDBConnection();
+                    preparedStatement = connection.prepareStatement("select name from users where id=0");
+                    resultSet = preparedStatement.executeQuery();
+                    data = resultSet.getString(1);
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (resultSet != null) resultSet.close();
+                        if (preparedStatement != null) preparedStatement.close();
+                        if (connection != null) connection.close();
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing resources", exceptSql);
+                    }
+                }
+            }
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = null;
         }
 
         if (privateTrue)
         {
             if (data != null)
             {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
@@ -105,7 +135,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_05 extend
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
