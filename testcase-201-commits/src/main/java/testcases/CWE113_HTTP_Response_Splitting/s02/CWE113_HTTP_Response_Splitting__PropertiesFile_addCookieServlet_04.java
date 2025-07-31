@@ -79,8 +79,30 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
         }
         else
         {
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null;
         }
 
         if (PRIVATE_STATIC_FINAL_TRUE)
@@ -96,6 +118,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
