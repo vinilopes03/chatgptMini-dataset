@@ -48,7 +48,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
         if (IO.STATIC_FINAL_FIVE == 5)
         {
             if (data != null) {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+                response.setHeader("Location", "/author.jsp?lang=" + URLEncoder.encode(data, "UTF-8")); // Fixed flaw
             }
         }
     }
