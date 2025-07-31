@@ -41,33 +41,15 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation omitted
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateReturnsTrue())
         {
-            data = ""; /* Initialize data */
-            /* Read data using an outbound tcp connection */
-            {
-                Socket socket = null;
-                BufferedReader readerBuffered = null;
-                InputStreamReader readerInputStream = null;
-                try
-                {
-                    /* Read data using an outbound tcp connection */
-                    socket = new Socket("host.example.org", 39544);
-                    /* read input from socket */
-                    readerInputStream = new InputStreamReader(socket.getInputStream(), "UTF-8");
-                    readerBuffered = new BufferedReader(readerInputStream);
-                    data = readerBuffered.readLine(); // POTENTIAL FLAW
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    // Cleanup code omitted for brevity
-                }
-            }
+            data = "hardcodedString"; // Good source
         }
         else
         {
@@ -78,14 +60,9 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_08 ext
         {
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // POTENTIAL FLAW
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a flaw, but data is safe
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Initial implementation
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
