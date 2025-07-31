@@ -19,6 +19,7 @@ package testcases.CWE113_HTTP_Response_Splitting.s01;
 import testcasesupport.*;
 
 import javax.servlet.http.*;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet_15 extends AbstractTestCaseServlet
 {
@@ -68,8 +69,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
             data = null;
             break;
         default:
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded string
             break;
         }
 
@@ -78,7 +78,8 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
         case 7:
             if (data != null)
             {
-                Cookie cookieSink = new Cookie("lang", data);
+                Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
                 response.addCookie(cookieSink);
             }
             break;
