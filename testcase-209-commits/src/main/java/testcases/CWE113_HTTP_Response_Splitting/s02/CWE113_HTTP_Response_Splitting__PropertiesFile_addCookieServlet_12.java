@@ -94,17 +94,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_12 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if(IO.staticReturnsTrueOrFalse())
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-        else
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
+        String data = "foo"; // Always a good source in this method
 
         if(IO.staticReturnsTrueOrFalse())
         {
