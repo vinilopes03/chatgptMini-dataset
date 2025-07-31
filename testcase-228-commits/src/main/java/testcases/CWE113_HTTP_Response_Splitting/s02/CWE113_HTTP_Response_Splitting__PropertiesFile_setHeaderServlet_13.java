@@ -43,15 +43,20 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_13 
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing implementation
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.STATIC_FINAL_FIVE!=5)
-        {
-            data = null; // Ensure data is initialized
-        }
-        else
+        if (IO.STATIC_FINAL_FIVE==5)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
         }
 
         if (IO.STATIC_FINAL_FIVE==5)
@@ -64,7 +69,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_13 
         }
     }
 
-    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (IO.STATIC_FINAL_FIVE==5)
@@ -107,11 +112,7 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_13 
             data = null; // Ensure data is initialized
         }
 
-        if (IO.STATIC_FINAL_FIVE!=5)
-        {
-            // No action needed
-        }
-        else
+        if (IO.STATIC_FINAL_FIVE==5)
         {
             if (data != null)
             {
