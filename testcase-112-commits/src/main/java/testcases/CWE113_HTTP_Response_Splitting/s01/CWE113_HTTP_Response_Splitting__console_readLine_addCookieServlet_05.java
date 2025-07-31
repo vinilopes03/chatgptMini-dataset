@@ -107,6 +107,31 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
                 response.addCookie(cookieSink);
             }
         }
+        
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for goodG2B1
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for goodG2B2
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for goodB2G1
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation for goodB2G2
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
