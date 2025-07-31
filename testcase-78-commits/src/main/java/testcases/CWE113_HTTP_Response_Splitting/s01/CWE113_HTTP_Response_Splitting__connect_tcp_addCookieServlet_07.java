@@ -34,13 +34,29 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_addCookieServlet_07 ext
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation as before
+        String data = ""; /* Initialize data */
+        if (privateFive == 5)
+        {
+            Socket socket = new Socket("host.example.org", 39544);
+            BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+            data = readerBuffered.readLine(); // POTENTIAL FLAW
+            readerBuffered.close();
+            socket.close();
+        }
+
+        if (privateFive == 5)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // POTENTIAL FLAW
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data = "hardcoded_string"; // FIX: Use a hardcoded string
-
         if (privateFive == 5)
         {
             if (data != null)
