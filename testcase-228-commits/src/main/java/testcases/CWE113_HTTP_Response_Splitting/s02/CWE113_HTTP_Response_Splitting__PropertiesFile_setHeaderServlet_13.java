@@ -29,41 +29,16 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_13 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing implementation
+    }
+    
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.STATIC_FINAL_FIVE==5)
         {
-            data = ""; /* Initialize data */
-            /* retrieve the property */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-                try
-                {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    /* POTENTIAL FLAW: Read data from a .properties file */
-                    data = properties.getProperty("data");
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    /* Close stream reading object */
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            /* FIX: Use a hardcoded string */
+            data = "foo";
         }
         else
         {
@@ -78,11 +53,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_13 
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-    
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Implementation will be added in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
