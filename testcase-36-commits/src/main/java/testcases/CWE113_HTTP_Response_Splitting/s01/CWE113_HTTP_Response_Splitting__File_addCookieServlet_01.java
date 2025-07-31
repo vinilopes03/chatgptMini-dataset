@@ -41,12 +41,22 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
         goodB2G(request, response);
     }
 
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data = "foo"; // Hardcoded string
+
+        if (data != null)
+        {
+            Cookie cookieSink = new Cookie("lang", data);
+            response.addCookie(cookieSink); // Potentially insecure
+        }
+    }
+
     /* goodB2G() - use badsource and goodsink */
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-
-        data = ""; /* Initialize data */
+        String data = ""; /* Initialize data */
         {
             File file = new File("C:\\data.txt");
             FileInputStream streamFileInput = null;
@@ -75,5 +85,12 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_01 extends Ab
             Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8")); // FIX
             response.addCookie(cookieSink); // Now secure
         }
+    }
+
+    /* Below is the main() method for testing */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
