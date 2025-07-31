@@ -36,35 +36,54 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
         if (PRIVATE_STATIC_FINAL_TRUE)
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
             {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
                 try
                 {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    data = properties.getProperty("data"); // Read data from properties file
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
                 }
                 catch (IOException exceptIO)
                 {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
                 }
             }
+        }
+        else
+        {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            // Good source: Use a hardcoded string
+            data = "foo";
         }
         else
         {
@@ -75,15 +94,10 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_04 
         {
             if (data != null)
             {
-                // Potential flaw: Input not verified before inclusion in header
+                // Ensure proper URL encoding
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to implement good practices
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
