@@ -41,7 +41,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
             {
                 streamFileInput = new FileInputStream("../common/config.properties");
                 properties.load(streamFileInput);
-                /* POTENTIAL FLAW: Read data from a .properties file */
                 data = properties.getProperty("data");
             }
             catch (IOException exceptIO)
@@ -71,9 +70,32 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_04 
         }
     }
 
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            data = null;
+        }
+        else
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation to be added in future commits
+        goodG2B1(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
