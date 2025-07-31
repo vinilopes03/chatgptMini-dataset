@@ -69,6 +69,12 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_17 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         data = "hardcoded_string"; // Use a hardcoded string
 
