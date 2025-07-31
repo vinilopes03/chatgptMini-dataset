@@ -31,21 +31,21 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_13 extend
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         // Bad method implementation...
-        // (Already implemented in the previous commit)
+        // (Already implemented in the previous commits)
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.STATIC_FINAL_FIVE==5 to IO.STATIC_FINAL_FIVE!=5 */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.STATIC_FINAL_FIVE!=5)
-        {
-            data = null; // Ensure data is initialized
-        }
-        else
+        if (IO.STATIC_FINAL_FIVE==5)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Ensure data is initialized
         }
 
         if (IO.STATIC_FINAL_FIVE==5)
@@ -61,6 +61,7 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_13 extend
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Call other good methods later...
     }
 
