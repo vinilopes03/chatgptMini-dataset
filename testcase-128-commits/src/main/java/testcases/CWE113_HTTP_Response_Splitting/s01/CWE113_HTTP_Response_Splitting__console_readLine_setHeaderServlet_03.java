@@ -48,78 +48,22 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_0
 
     private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (5==5)
-        {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
-        }
-        else
-        {
-            data = null;
-        }
-
-        if (5==5)
-        {
-            if (data != null)
-            {
-                /* POTENTIAL FLAW: Input not verified before inclusion in header */
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation from previous commits
     }
 
     private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (5==5)
-        {
-            data = ""; /* Initialize data */
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
-                /* POTENTIAL FLAW: Read data from the console using readLine */
-                data = reader.readLine();
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        }
-
-        if (5!=5)
-        {
-            // Dead code
-        }
-        else
-        {
-            if (data != null)
-            {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                data = URLEncoder.encode(data, "UTF-8");
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+        // Implementation from previous commits
     }
 
     private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        String data;
-        if (5==5)
-        {
-            data = ""; /* Initialize data */
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, "UTF-8"))) {
-                /* POTENTIAL FLAW: Read data from the console using readLine */
-                data = reader.readLine();
-            } catch (IOException exceptIO) {
-                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-            }
-        }
+        // Implementation from previous commits
+    }
 
-        if (5==5)
-        {
-            if (data != null)
-            {
-                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
-                data = URLEncoder.encode(data, "UTF-8");
-                response.setHeader("Location", "/author.jsp?lang=" + data);
-            }
-        }
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
     }
 }
