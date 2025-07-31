@@ -49,12 +49,36 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_31 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method implementation will be added in subsequent commits
+        goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
         mainFromParent(args);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data;
+
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+
+            if (data != null)
+            {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
     }
 }
