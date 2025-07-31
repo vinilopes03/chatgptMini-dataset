@@ -86,4 +86,40 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_03 ext
             }
         }
     }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (5 != 5) {
+            /* INCIDENTAL: CWE 561 Dead Code */
+            data = null;
+        } else {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data;
+        if (5 == 5) {
+            /* FIX: Use a hardcoded string */
+            data = "foo";
+        } else {
+            /* INCIDENTAL: CWE 561 Dead Code */
+            data = null;
+        }
+
+        if (5 == 5) {
+            if (data != null) {
+                /* POTENTIAL FLAW: Input not verified before inclusion in header */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
 }
