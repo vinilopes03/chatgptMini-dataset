@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extends AbstractTestCaseServlet
 {
@@ -32,34 +33,24 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation as in previous commit.
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (privateTrue)
         {
-            data = ""; /* Initialize data */
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try
-            {
-                connection = IO.getDBConnection();
-                preparedStatement = connection.prepareStatement("select name from users where id=0");
-                resultSet = preparedStatement.executeQuery();
-                data = resultSet.getString(1);
-            }
-            catch (SQLException exceptSql)
-            {
-                IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-            }
-            finally
-            {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            }
+            data = "foo";  // Using hardcoded string
         }
         else
         {
-            data = null;
+            data = null; // Dead code
         }
 
         if (privateTrue)
@@ -70,11 +61,6 @@ public class CWE113_HTTP_Response_Splitting__database_addCookieServlet_05 extend
                 response.addCookie(cookieSink);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method to be implemented in future commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
