@@ -31,40 +31,20 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_31 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Existing implementation
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B(request, response);
+    }
+
+    /* goodG2B() - use goodsource and badsink */
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
-            String data = ""; /* Initialize data */
-
-            /* Read data from a database */
-            {
-                Connection connection = null;
-                PreparedStatement preparedStatement = null;
-                ResultSet resultSet = null;
-
-                try
-                {
-                    /* setup the connection */
-                    connection = IO.getDBConnection();
-
-                    /* prepare and execute a (hardcoded) query */
-                    preparedStatement = connection.prepareStatement("select name from users where id=0");
-                    resultSet = preparedStatement.executeQuery();
-
-                    /* POTENTIAL FLAW: Read data from a database query resultset */
-                    data = resultSet.getString(1);
-                }
-                catch (SQLException exceptSql)
-                {
-                    IO.logger.log(Level.WARNING, "Error with SQL statement", exceptSql);
-                }
-                finally
-                {
-                    /* Close database objects */
-                    try { if (resultSet != null) { resultSet.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql); }
-                    try { if (preparedStatement != null) { preparedStatement.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql); }
-                    try { if (connection != null) { connection.close(); } } catch (SQLException exceptSql) { IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql); }
-                }
-            }
+            String data = "foo"; // FIX: Use a hardcoded string
 
             dataCopy = data;
         }
@@ -77,11 +57,6 @@ public class CWE113_HTTP_Response_Splitting__database_setHeaderServlet_31 extend
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Method will be implemented in later commits
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
