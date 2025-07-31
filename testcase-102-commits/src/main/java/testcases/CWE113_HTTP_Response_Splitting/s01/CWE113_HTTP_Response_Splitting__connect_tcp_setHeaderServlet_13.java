@@ -55,9 +55,81 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
         if (IO.STATIC_FINAL_FIVE == 5) {
             data = "foo"; // Good source (hardcoded string)
+        } else {
+            data = null; // Initialize for else path
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Controlled input
+            }
+        }
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = "foo"; // Good source (hardcoded string)
+        } else {
+            data = null; // Initialize for else path
+        }
+
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Controlled input
+            }
+        }
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
+                data = readerBuffered.readLine(); // Potential flaw
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null; // Initialize for else path
+        }
+
+        if (IO.STATIC_FINAL_FIVE != 5) {
+            // INCIDENTAL: CWE 561 Dead Code
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8"); // Good sink
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Safe usage
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.STATIC_FINAL_FIVE == 5) {
+            data = ""; // Initialize data
+            try (Socket socket = new Socket("host.example.org", 39544);
+                 BufferedReader readerBuffered = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
+                data = readerBuffered.readLine(); // Potential flaw
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
         } else {
             data = null; // Initialize for else path
         }
@@ -69,7 +141,7 @@ public class CWE113_HTTP_Response_Splitting__connect_tcp_setHeaderServlet_13 ext
             }
         }
     }
-    
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
