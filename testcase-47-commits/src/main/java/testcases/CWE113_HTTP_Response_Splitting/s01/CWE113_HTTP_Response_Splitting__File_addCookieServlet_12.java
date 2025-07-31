@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_12 extends AbstractTestCaseServlet
 {
@@ -36,14 +37,48 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_12 extends Ab
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // implementation from previous commit
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        /* FIX: Use a hardcoded string */
-        data = "foo";
+        data = ""; /* Initialize data */
+        File file = new File("C:\\data.txt");
+        FileInputStream streamFileInput = null;
+        InputStreamReader readerInputStream = null;
+        BufferedReader readerBuffered = null;
+        try
+        {
+            /* read string from file into data */
+            streamFileInput = new FileInputStream(file);
+            readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+            readerBuffered = new BufferedReader(readerInputStream);
+            data = readerBuffered.readLine();
+        }
+        catch (IOException exceptIO)
+        {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        }
+        finally
+        {
+            /* Close stream reading objects */
+            try
+            {
+                if (readerBuffered != null) readerBuffered.close();
+                if (readerInputStream != null) readerInputStream.close();
+                if (streamFileInput != null) streamFileInput.close();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error closing stream", exceptIO);
+            }
+        }
 
         if (data != null)
         {
-            Cookie cookieSink = new Cookie("lang", data);
-            /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+            Cookie cookieSink = new Cookie("lang", URLEncoder.encode(data, "UTF-8"));
+            /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
             response.addCookie(cookieSink);
         }
     }
@@ -51,6 +86,7 @@ public class CWE113_HTTP_Response_Splitting__File_addCookieServlet_12 extends Ab
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B(request, response);
+        goodB2G(request, response);
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
