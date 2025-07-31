@@ -42,7 +42,7 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_setHeaderServlet_1
 
         if (data != null) {
             /* POTENTIAL FLAW: Input not verified before inclusion in header */
-            response.setHeader("Location", "/author.jsp?lang=" + data);
+            response.setHeader("Location", "/author.jsp?lang=" + URLEncoder.encode(data, "UTF-8"));
         }
     }
 
