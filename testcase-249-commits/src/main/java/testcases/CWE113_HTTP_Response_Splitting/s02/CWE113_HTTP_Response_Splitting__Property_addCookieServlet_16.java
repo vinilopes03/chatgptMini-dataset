@@ -24,7 +24,26 @@ public class CWE113_HTTP_Response_Splitting__Property_addCookieServlet_16 extend
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will be added in next commits
+        String data;
+
+        while (true)
+        {
+            /* get system property user.home */
+            /* POTENTIAL FLAW: Read data from a system property */
+            data = System.getProperty("user.home");
+            break;
+        }
+
+        while (true)
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                /* POTENTIAL FLAW: Input not verified before inclusion in the cookie */
+                response.addCookie(cookieSink);
+            }
+            break;
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
