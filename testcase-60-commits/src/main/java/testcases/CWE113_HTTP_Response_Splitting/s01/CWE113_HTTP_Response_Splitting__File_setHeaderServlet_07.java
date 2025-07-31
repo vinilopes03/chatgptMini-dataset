@@ -47,31 +47,52 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        // Implementation from previous commit
+    }
+
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (privateFive != 5)
+        if (privateFive == 5)
         {
-            data = null; // Dead code
+            data = ""; /* Initialize data */
+            {
+                // Reading from file
+            }
         }
         else
         {
-            data = "foo"; // Hardcoded string
+            data = null; // Dead code
         }
 
-        if (privateFive == 5)
+        if (privateFive != 5)
+        {
+            // Dead code
+        }
+        else
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // Encoding the data
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
 
-    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
         if (privateFive == 5)
         {
-            data = "foo"; // Hardcoded string
+            data = ""; /* Initialize data */
+            {
+                // Reading from file
+            }
         }
         else
         {
@@ -82,6 +103,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_07 extends Ab
         {
             if (data != null)
             {
+                data = URLEncoder.encode(data, "UTF-8"); // Encoding the data
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
