@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.net.URLEncoder;
 
 public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 extends AbstractTestCaseServlet
 {
@@ -51,6 +52,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        goodG2B(request, response);
+        goodB2G(request, response);
+    }
+
+    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String dataCopy;
         {
             String data = "hardcodedString"; /* FIX: Use a hardcoded string */
@@ -60,6 +67,29 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_31 
             String data = dataCopy;
             if (data != null) {
                 response.setHeader("Location", "/author.jsp?lang=" + data); /* This is still a flaw */
+            }
+        }
+    }
+
+    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String dataCopy;
+        {
+            String data = ""; /* Initialize data */
+            Properties properties = new Properties();
+            try (FileInputStream streamFileInput = new FileInputStream("../common/config.properties")) {
+                properties.load(streamFileInput);
+                data = properties.getProperty("data"); /* POTENTIAL FLAW */
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            dataCopy = data;
+        }
+        {
+            String data = dataCopy;
+            if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8"); /* FIX: URL Encoding */
+                response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
     }
