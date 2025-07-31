@@ -48,7 +48,9 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_03 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method stub to be implemented
+        String data = "foo"; // FIX: Use a hardcoded string
+        Cookie cookieSink = new Cookie("lang", data);
+        response.addCookie(cookieSink); // Safe addition of cookie
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
