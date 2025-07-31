@@ -57,7 +57,20 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 
     private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Method to be implemented in later commits
+        String data = "foo"; // Good source: hardcoded string
+
+        if(IO.staticReturnsTrueOrFalse())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data); // FLAW: Input not verified
+                response.addCookie(cookieSink);
+            }
+        }
+        else
+        {
+            // This branch is not executed in the good case
+        }
     }
 
     private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable
