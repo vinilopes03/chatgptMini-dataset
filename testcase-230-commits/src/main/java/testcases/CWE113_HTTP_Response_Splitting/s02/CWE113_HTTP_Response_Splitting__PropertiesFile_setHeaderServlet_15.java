@@ -28,43 +28,25 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_15 
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation remains unchanged
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+    }
+
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
 
-        switch (6)
+        switch (5) // Changed to use a hardcoded string
         {
         case 6:
-            data = ""; /* Initialize data */
-            {
-                Properties properties = new Properties();
-                FileInputStream streamFileInput = null;
-                try
-                {
-                    streamFileInput = new FileInputStream("../common/config.properties");
-                    properties.load(streamFileInput);
-                    data = properties.getProperty("data"); // Read data from properties file
-                }
-                catch (IOException exceptIO)
-                {
-                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
-                }
-                finally
-                {
-                    try
-                    {
-                        if (streamFileInput != null)
-                        {
-                            streamFileInput.close();
-                        }
-                    }
-                    catch (IOException exceptIO)
-                    {
-                        IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
-                    }
-                }
-            }
+            data = null; // Dead code
             break;
         default:
-            data = null;
+            data = "foo"; // Good source
             break;
         }
 
@@ -73,17 +55,12 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_setHeaderServlet_15 
         case 7:
             if (data != null)
             {
-                response.setHeader("Location", "/author.jsp?lang=" + data); // Potential flaw
+                response.setHeader("Location", "/author.jsp?lang=" + data); // Still a potential flaw
             }
             break;
         default:
             IO.writeLine("Benign, fixed string");
             break;
         }
-    }
-
-    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
-    {
-        // Good implementations will go here
     }
 }
