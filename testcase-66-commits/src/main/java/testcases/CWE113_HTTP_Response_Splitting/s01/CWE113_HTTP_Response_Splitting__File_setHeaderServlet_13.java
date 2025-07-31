@@ -76,6 +76,7 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_13 extends Ab
 
         if (IO.STATIC_FINAL_FIVE == 5) {
             if (data != null) {
+                data = URLEncoder.encode(data, "UTF-8"); // FIX: use URLEncoder.encode
                 response.setHeader("Location", "/author.jsp?lang=" + data);
             }
         }
