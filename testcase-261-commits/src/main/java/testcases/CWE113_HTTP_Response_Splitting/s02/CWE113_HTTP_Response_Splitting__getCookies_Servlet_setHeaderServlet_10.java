@@ -58,21 +58,22 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_setHeaderServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Further implementation to be added in next commits
     }
 
-    /* goodG2B1() - use goodsource and badsink by changing first IO.staticTrue to IO.staticFalse */
-    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         String data;
-        if (IO.staticFalse)
-        {
-            data = null; // Dead code, will not run
-        }
-        else
+        if (IO.staticTrue)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Dead code, will not run
         }
 
         if (IO.staticTrue)
