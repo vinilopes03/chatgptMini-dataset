@@ -61,21 +61,24 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        goodG2B(request, response);
-        goodB2G(request, response);
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
     }
 
-    private void goodG2B(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String data = "foo"; // Use a hardcoded string
-
-        // Set header with safe data
         response.setHeader("Location", "/author.jsp?lang=" + data);
     }
 
-    private void goodB2G(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String data = ""; // Initialize data
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = "foo"; // Use a hardcoded string
+        response.setHeader("Location", "/author.jsp?lang=" + data);
+    }
 
-        // Try to read from a file
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
         File file = new File("C:\\data.txt");
         FileInputStream streamFileInput = null;
         InputStreamReader readerInputStream = null;
@@ -88,7 +91,36 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_15 extends Ab
         } catch (IOException exceptIO) {
             IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
         } finally {
-            // Close resources
+            try {
+                if (readerBuffered != null) readerBuffered.close();
+                if (readerInputStream != null) readerInputStream.close();
+                if (streamFileInput != null) streamFileInput.close();
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error closing streams", exceptIO);
+            }
+        }
+
+        // Encode data to prevent HTTP Response Splitting
+        if (data != null) {
+            data = URLEncoder.encode(data, "UTF-8");
+            response.setHeader("Location", "/author.jsp?lang=" + data);
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        String data = ""; // Initialize data
+        File file = new File("C:\\data.txt");
+        FileInputStream streamFileInput = null;
+        InputStreamReader readerInputStream = null;
+        BufferedReader readerBuffered = null;
+        try {
+            streamFileInput = new FileInputStream(file);
+            readerInputStream = new InputStreamReader(streamFileInput, "UTF-8");
+            readerBuffered = new BufferedReader(readerInputStream);
+            data = readerBuffered.readLine(); // Read data from the file
+        } catch (IOException exceptIO) {
+            IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+        } finally {
             try {
                 if (readerBuffered != null) readerBuffered.close();
                 if (readerInputStream != null) readerInputStream.close();
