@@ -43,7 +43,6 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_08 
         if (privateReturnsTrue())
         {
             data = ""; /* Initialize data */
-            /* retrieve the property */
             {
                 Properties properties = new Properties();
                 FileInputStream streamFileInput = null;
@@ -83,7 +82,25 @@ public class CWE113_HTTP_Response_Splitting__PropertiesFile_addCookieServlet_08 
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation will come later
+        String data;
+        if (privateReturnsTrue())
+        {
+            /* FIX: Use a hardcoded string */
+            data = "foo"; // Good Source
+        }
+        else
+        {
+            data = null; // For completeness
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink); // Still a Bad Sink, but safe here
+            }
+        }
     }
 
     public static void main(String[] args) throws ClassNotFoundException,
