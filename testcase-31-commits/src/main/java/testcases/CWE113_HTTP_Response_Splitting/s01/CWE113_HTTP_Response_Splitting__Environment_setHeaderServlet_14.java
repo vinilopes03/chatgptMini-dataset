@@ -54,8 +54,7 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
         }
         else
         {
-            /* FIX: Use a hardcoded string */
-            data = "foo";
+            data = "foo"; // Hardcoded good source
         }
 
         if (IO.staticFive==5)
@@ -67,8 +66,36 @@ public class CWE113_HTTP_Response_Splitting__Environment_setHeaderServlet_14 ext
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (IO.staticFive==5)
+        {
+            data = System.getenv("ADD");
+        }
+        else
+        {
+            data = null; // Dead code
+        }
+
+        if (IO.staticFive!=5)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (data != null)
+            {
+                /* FIX: use URLEncoder.encode to hex-encode non-alphanumerics */
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodB2G1(request, response);
     }
 }
