@@ -1,0 +1,11 @@
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcases/CWE113_HTTP_Response_Splitting/s01/CWE113_HTTP_Response_Splitting__File_setHeaderServlet_12.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCase.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseBadOnly.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseBase.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseClassIssue.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseClassIssueBad.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseClassIssueGood.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseServlet.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseServletBadOnly.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/AbstractTestCaseServletBase.java
+/Users/vlopes/Desktop/git-projects/chatgptMini-dataset/testcase-65-commits/src/main/java/testcasesupport/IO.java
