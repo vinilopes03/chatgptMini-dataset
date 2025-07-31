@@ -20,6 +20,12 @@ import testcasesupport.*;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+import java.util.logging.Level;
+
 public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_08 extends AbstractTestCaseServlet
 {
     private boolean privateReturnsTrue()
@@ -34,7 +40,38 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
 
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Bad logic will be implemented later
+        String data;
+        if (privateReturnsTrue())
+        {
+            data = ""; /* Initialize data */
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                try
+                {
+                    /* POTENTIAL FLAW: Read data from the console using readLine */
+                    data = readerBuffered.readLine();
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+                }
+            }
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code */
+            data = null;
+        }
+
+        if (privateReturnsTrue())
+        {
+            if (data != null)
+            {
+                Cookie cookieSink = new Cookie("lang", data);
+                response.addCookie(cookieSink);
+            }
+        }
     }
 
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
@@ -42,11 +79,6 @@ public class CWE113_HTTP_Response_Splitting__console_readLine_addCookieServlet_0
         // Good logic will be implemented later
     }
 
-    /* Below is the main(). It is only used when building this testcase on
-     * its own for testing or for building a binary to use in testing binary
-     * analysis tools. It is not used when compiling all the testcases as one
-     * application, which is how source code analysis tools are tested.
-     */
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
