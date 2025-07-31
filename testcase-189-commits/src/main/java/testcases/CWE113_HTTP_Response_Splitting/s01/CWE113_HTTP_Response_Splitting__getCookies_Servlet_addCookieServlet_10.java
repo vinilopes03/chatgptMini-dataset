@@ -26,20 +26,25 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
 {
     public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
-        // Implementation from previous commit
+        // Implementation from previous commits
     }
 
     private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
+        // Implementation from previous commit
+    }
+
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
         String data;
-        if (IO.staticFalse)
-        {
-            data = null; // Will not be used
-        }
-        else
+        if (IO.staticTrue)
         {
             /* FIX: Use a hardcoded string */
             data = "foo";
+        }
+        else
+        {
+            data = null; // Will not be used
         }
 
         if (IO.staticTrue)
@@ -56,6 +61,7 @@ public class CWE113_HTTP_Response_Splitting__getCookies_Servlet_addCookieServlet
     public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
     {
         goodG2B1(request, response);
+        goodG2B2(request, response);
         // Other good methods will go here
     }
 
