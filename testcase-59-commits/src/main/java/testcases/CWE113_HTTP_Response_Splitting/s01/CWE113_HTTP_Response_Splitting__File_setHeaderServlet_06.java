@@ -100,6 +100,56 @@ public class CWE113_HTTP_Response_Splitting__File_setHeaderServlet_06 extends Ab
         }
     }
 
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+                data = reader.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE != 5) {
+            IO.writeLine("Benign, fixed string");
+        } else {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            data = ""; // Initialize data
+            File file = new File("C:\\data.txt");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
+                data = reader.readLine(); // POTENTIAL FLAW: Read data from a file
+            } catch (IOException exceptIO) {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+        } else {
+            data = null;
+        }
+
+        if (PRIVATE_STATIC_FINAL_FIVE == 5) {
+            if (data != null) {
+                // FIX: use URLEncoder.encode to hex-encode non-alphanumerics
+                data = URLEncoder.encode(data, "UTF-8");
+                response.setHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public static void main(String[] args) throws ClassNotFoundException,
            InstantiationException, IllegalAccessException
     {
